@@ -1,36 +1,30 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VPOSTZILLA V5 - ULTRA</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VPOSTZILLA V6 - GOKU EDITION</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-black text-white">
-<header class="p-4 border-b border-white/10 flex justify-between"><span class="font-black">🦖 VPOSTZILLA ULTRA</span><span class="text-xs bg-[#A3FF12] text-black px-2 py-1 rounded-full font-black">V5</span></header>
+<header class="p-4 border-b border-white/10 flex justify-between"><span class="font-black">🦖 VPOSTZILLA GOKU</span><span class="text-xs bg-[#A3FF12] text-black px-2 py-1 rounded-full font-black">V6</span></header>
 <div class="max-w-6xl mx-auto p-4">
 <div class="bg-white text-black rounded-[2rem] p-6">
-<h2 class="font-black text-2xl">🎬 CRIAR VÍDEO ÉPICO COM IMAGEM</h2>
+<h2 class="font-black text-xl">🎬 CRIAR VÍDEO ÉPICO COM IMAGEM</h2>
 <div class="grid md:grid-cols-3 gap-3 mt-4">
-<input id="tema" value="OS CAVALEIROS CHEGARAM" class="bg-zinc-100 border-2 rounded-xl px-4 py-3 font-black text-sm">
+<input id="tema" value="GOKU FOI PARAR NO ESPAÇO" class="bg-zinc-100 border-2 border-black rounded-xl px-4 py-3 font-black text-sm uppercase">
 <input type="file" id="imgUpload" accept="image/*" class="bg-zinc-100 border-2 rounded-xl px-4 py-2 text-xs">
 <button onclick="criarVideoReal()" class="bg-black text-white font-black py-3 rounded-full">🚀 CRIAR VÍDEO REAL</button>
 </div>
 <div id="area" class="hidden mt-6 grid lg:grid-cols-[360px_1fr] gap-5">
 <div class="bg-black rounded-2xl p-3">
 <canvas id="c" width="1080" height="1920" class="w-full rounded-xl bg-zinc-900 aspect-[9/16]"></canvas>
-<div class="flex gap-2 mt-3">
-<button onclick="baixar()" class="flex-1 bg-[#A3FF12] text-black font-black py-3 rounded-full text-sm">⬇️ BAIXAR MP4</button>
-<button onclick="criarVideoReal()" class="bg-zinc-800 text-white px-4 py-3 rounded-full text-sm">▶️ REPLAY</button>
-</div>
+<button onclick="baixar()" class="w-full mt-3 bg-[#A3FF12] text-black font-black py-3 rounded-full text-sm">⬇️ BAIXAR VÍDEO MP4</button>
 </div>
 <div>
 <div class="bg-zinc-50 border rounded-xl p-4 text-sm">
 <p class="font-black">ROTEIRO VIRAL:</p>
-<p class="mt-2"><b>0-2s:</b> VOCÊ NÃO VAI ACREDITAR NO QUE ACONTECEU NO VULCÃO...</p>
-<p class="mt-2"><b>2-6s:</b> OS CAVALEIROS DE OURO DESPERTARAM - PODER MÁXIMO!</p>
-<p class="mt-2"><b>6-10s:</b> COMENTA "EU QUERO" QUE TE MANDO A PARTE 2 COM O FINAL ÉPICO!</p>
-<div class="mt-3 bg-[#A3FF12] p-3 rounded-xl font-bold">LEGENDA: Os Cavaleiros do Zodíaco lutando no vulcão em erupção 🌋 Isso vai te deixar sem palavras 😱 #cavaleiros #anime #viral #vpostzilla</div>
+<div id="roteiro"></div>
+<div id="legenda" class="mt-3 bg-[#A3FF12] p-3 rounded-xl font-bold"></div>
 </div>
 <div class="mt-4 space-y-2" id="posts"></div>
 </div>
@@ -44,36 +38,32 @@ document.getElementById('imgUpload').onchange=e=>{
  const r=new FileReader(); r.onload=ev=>{img=new Image(); img.src=ev.target.result;}; r.readAsDataURL(f);
 };
 function criarVideoReal(){
- const tema=document.getElementById('tema').value;
+ const tema=document.getElementById('tema').value.toUpperCase();
  document.getElementById('area').classList.remove('hidden');
  const canvas=document.getElementById('c'); const ctx=canvas.getContext('2d');
  let fr=0; const total=300;
- // Se não tem imagem, usa gradiente épico
+ function wrapText(text,y){
+  const words=text.split(' '); let line=''; const lines=[]; for(let n=0;n<words.length;n++){ const test=line+words[n]+' '; const m=ctx.measureText(test); if(m.width>900 && n>0){ lines.push(line); line=words[n]+' '; } else line=test; } lines.push(line);
+  lines.forEach((l,i)=>{ ctx.strokeText(l,540,y+i*85); ctx.fillText(l,540,y+i*85); });
+ }
  function draw(){
   ctx.clearRect(0,0,1080,1920);
-  if(img){
-   const zoom=1+fr*0.0008; const w=1080*zoom, h=1920*zoom;
-   ctx.drawImage(img, -(w-1080)/2, -(h-1920)/2, w, h);
-  } else {
-   const g=ctx.createLinearGradient(0,0,0,1920); g.addColorStop(0,'#1a1a1a'); g.addColorStop(0.5,'#ff4400'); g.addColorStop(1,'#000'); ctx.fillStyle=g; ctx.fillRect(0,0,1080,1920);
-  }
-  // overlay escuro
-  ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.fillRect(0,0,1080,1920);
-  // texto épico com borda
-  ctx.textAlign='center'; ctx.font='900 80px Inter'; ctx.lineWidth=12; ctx.strokeStyle='black'; ctx.strokeText(tema,540,500); ctx.fillStyle='white'; ctx.fillText(tema,540,500);
-  ctx.font='900 90px Inter'; ctx.strokeText('★ VULCÃO EM CHAMAS ★',540,650); ctx.fillStyle='#A3FF12'; ctx.fillText('★ VULCÃO EM CHAMAS ★',540,650);
-  // barra
+  if(img){ const zoom=1+fr*0.001; const w=1080*zoom, h=1920*zoom; ctx.drawImage(img, -(w-1080)/2, -(h-1920)/2, w, h); } 
+  else { const g=ctx.createLinearGradient(0,0,0,1920); g.addColorStop(0,'#001'); g.addColorStop(1,'#00f'); ctx.fillStyle=g; ctx.fillRect(0,0,1080,1920); }
+  ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.fillRect(0,0,1080,1920);
+  ctx.textAlign='center'; ctx.lineWidth=14; ctx.strokeStyle='black'; ctx.fillStyle='white'; ctx.font='900 60px Inter';
+  wrapText(tema,500);
+  ctx.font='900 70px Inter'; ctx.fillStyle='#A3FF12'; ctx.strokeText('★ PODER MÁXIMO ★',540,750); ctx.fillText('★ PODER MÁXIMO ★',540,750);
   ctx.fillStyle='#A3FF12'; ctx.fillRect(0,1880,(fr/total)*1080,40);
   fr=(fr+1)%total; if(fr<total) requestAnimationFrame(draw);
  }
- draw();
- gravar(); gerarPosts();
+ draw(); gravar(); 
+ document.getElementById('roteiro').innerHTML=`<p class="mt-2"><b>0-2s:</b> ${tema} E ISSO ACONTECEU...</p><p class="mt-2"><b>2-6s:</b> KAMEHAMEHA NO ESPAÇO - NÍVEL DEUS!</p><p class="mt-2"><b>6-10s:</b> COMENTA "KAMEHAMEHA" QUE TE MANDO A PARTE 2!</p>`;
+ document.getElementById('legenda').innerHTML=`LEGENDA: ${tema} 🌌 Kamehameha que quebrou o espaço 😱 Comenta KAMEHAMEHA 👇 #goku #dragonball #anime #viral`;
+ const d=document.getElementById('posts'); d.innerHTML=''; for(let i=1;i<=6;i++){ const el=document.createElement('div'); el.className='bg-zinc-50 border rounded-xl p-3 text-sm'; el.innerHTML=`<b class="bg-black text-white px-2 py-1 rounded-full text-xs">POST ${i}</b> <span class="font-bold ml-2">${tema} - Parte ${i}</span><p class="text-xs text-zinc-500 mt-1">Comenta KAMEHAMEHA 👇 #goku #viral</p>`; d.appendChild(el);}
 }
-function gravar(){
- const canvas=document.getElementById('c'); const stream=canvas.captureStream(30); chunks=[]; rec=new MediaRecorder(stream,{mimeType:'video/webm'}); rec.ondataavailable=e=>{if(e.data.size>0) chunks.push(e.data)}; rec.onstop=()=>{blob=new Blob(chunks,{type:'video/webm'})}; rec.start(); setTimeout(()=>{if(rec.state=='recording') rec.stop();},10000);
-}
-function baixar(){ if(!blob){alert('Gravando... 2s'); setTimeout(baixar,1000); return;} const u=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=u; a.download='cavaleiros-vulcao-viral.webm'; a.click(); }
-function gerarPosts(){ const d=document.getElementById('posts'); d.innerHTML=''; for(let i=1;i<=6;i++){ const el=document.createElement('div'); el.className='bg-zinc-50 border rounded-xl p-3 text-sm'; el.innerHTML=`<b class="bg-black text-white px-2 py-1 rounded-full text-xs">POST ${i}</b> <span class="font-bold ml-2">Os Cavaleiros no vulcão - Segredo #${i}</span><p class="text-xs text-zinc-500 mt-1">Comenta EU QUERO 👇 #cavaleiros #anime #viral</p>`; d.appendChild(el);} }
+function gravar(){ const canvas=document.getElementById('c'); const stream=canvas.captureStream(30); chunks=[]; rec=new MediaRecorder(stream,{mimeType:'video/webm'}); rec.ondataavailable=e=>{if(e.data.size>0) chunks.push(e.data)}; rec.onstop=()=>{blob=new Blob(chunks,{type:'video/webm'})}; rec.start(); setTimeout(()=>{if(rec.state=='recording') rec.stop();},10000); }
+function baixar(){ if(!blob){alert('Gravando... aguarde 2s'); setTimeout(baixar,1000); return;} const u=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=u; a.download='goku-espaco-viral.webm'; a.click(); }
 </script>
 </body>
 </html>
