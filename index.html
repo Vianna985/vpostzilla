@@ -3,87 +3,106 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VPOSTZILLA - 1 Video Vira 30 Virais</title>
+<title>VPOSTZILLA - 1 Video Vira 30</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<style>body{font-family:Inter,sans-serif}</style>
 </head>
 <body class="bg-[#0a0a0a] text-white">
 <header class="fixed top-0 w-full z-50 bg-black/80 border-b border-white/10 backdrop-blur">
-<div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-<div class="flex items-center gap-2"><span>🦖</span><span class="font-black text-xl">VPOSTZILLA</span><span class="bg-[#A3FF12] text-black text-[10px] font-black px-2 py-1 rounded-full ml-2">BETA</span></div>
+<div class="max-w-7xl mx-auto px-6 py-4 flex items-center gap-2">
+<span>🦖</span><span class="font-black text-xl">VPOSTZILLA</span><span class="bg-[#A3FF12] text-black text-[10px] font-black px-2 py-1 rounded-full ml-2">BETA</span>
 </div>
 </header>
-<section class="pt-28 pb-8 px-6 max-w-7xl mx-auto">
-<h1 class="text-5xl md:text-7xl font-black leading-[0.9] text-center">1 VIDEO<span class="text-[#A3FF12]"> VIRA 30</span> POSTS</h1>
+<section class="pt-24 pb-8 px-6 max-w-7xl mx-auto">
+<h1 class="text-5xl md:text-7xl font-black text-center">1 VIDEO <span class="text-[#A3FF12]">VIRA 30</span> POSTS</h1>
 </section>
-<section class="px-6 pb-16 max-w-6xl mx-auto">
-<div class="bg-white text-black rounded-[2.5rem] p-6 md:p-8">
-<h2 class="font-black text-2xl mb-4">GERADOR VPOSTZILLA</h2>
+<section class="px-4 pb-16 max-w-6xl mx-auto">
+<div class="bg-white text-black rounded-[2rem] p-5 md:p-8">
+<h2 class="font-black text-xl mb-4">GERADOR VPOSTZILLA</h2>
 <div class="flex flex-col md:flex-row gap-3">
-<input id="videoUrl" type="url" value="https://www.tiktok.com/@gestaroficial/video/7676220112709471509" placeholder="Cole o link do TikTok..." class="flex-1 bg-zinc-100 border-2 rounded-full px-6 py-4 outline-none">
+<input id="videoUrl" type="url" value="https://www.tiktok.com/@gestaroficial/video/7676220112709471509" class="flex-1 bg-zinc-100 border-2 rounded-full px-6 py-4 outline-none text-sm">
 <button onclick="gerarPosts()" class="bg-black text-white font-black px-8 py-4 rounded-full">GERAR 30 POSTS + VIDEO</button>
 </div>
-<div id="loading" class="hidden mt-8 text-center py-12">
-<div class="w-16 h-16 border-4 border-zinc-200 border-t-black rounded-full animate-spin mx-auto"></div>
-<p class="font-bold mt-4">Carregando video...</p>
-</div>
-<div id="resultado" class="hidden mt-8 grid lg:grid-cols-[360px_1fr] gap-6">
-<div class="space-y-4">
-<div class="bg-black rounded-[1.5rem] p-4 sticky top-24">
+<div id="resultado" class="hidden mt-6 grid lg:grid-cols-[360px_1fr] gap-5">
+<div>
+<div class="bg-black rounded-[1.5rem] p-4">
 <h3 class="text-white font-black text-sm mb-3">🎬 VIDEO ORIGINAL</h3>
-<div id="videoPlayer" class="bg-zinc-900 rounded-xl overflow-hidden aspect-[9/16] max-h-[600px] flex items-center justify-center">
-<p class="text-zinc-500 text-xs p-6 text-center">O video vai aparecer aqui</p>
-</div>
-<div class="mt-4 flex flex-col gap-2">
-<a id="btnAbrirTikTok" href="#" target="_blank" class="bg-[#A3FF12] text-black font-black py-3 rounded-full text-center text-sm">▶️ ABRIR NO TIKTOK</a>
-<a id="btnBaixar" href="#" target="_blank" class="bg-zinc-800 text-white font-bold py-3 rounded-full text-center text-sm">⬇️ BAIXAR SEM MARCA D'AGUA</a>
+<div id="videoPlayer" class="bg-zinc-900 rounded-xl overflow-hidden aspect-[9/16] min-h-[500px]"></div>
+<div class="mt-4 space-y-2">
+<a id="btnAbrirTikTok" href="#" target="_blank" class="block bg-[#A3FF12] text-black font-black py-4 rounded-full text-center">▶️ RODAR VIDEO NO TIKTOK</a>
+<a id="btnBaixar" href="#" target="_blank" class="block bg-zinc-800 text-white font-bold py-3 rounded-full text-center text-sm">⬇️ BAIXAR SEM MARCA D'ÁGUA</a>
+<button onclick="copiarLink()" class="w-full bg-white text-black border-2 border-black font-bold py-3 rounded-full text-sm">📋 COPIAR LINK</button>
 </div>
 </div>
 </div>
 <div>
-<div id="postsGrid" class="grid md:grid-cols-2 gap-4 max-h-[800px] overflow-y-auto"></div>
-<div class="mt-6 flex gap-3">
-<button onclick="copiarTodos()" class="flex-1 bg-zinc-100 border-2 border-black py-3 rounded-full font-bold text-sm">COPIAR TODOS</button>
-<button onclick="baixarTXT()" class="flex-1 bg-black text-white py-3 rounded-full font-black text-sm">BAIXAR .TXT</button>
+<div id="postsGrid" class="grid gap-3 max-h-[700px] overflow-y-auto"></div>
+<div class="mt-4 flex gap-2">
+<button onclick="copiarTodos()" class="flex-1 bg-zinc-100 border-2 border-black py-3 rounded-full font-bold text-xs">COPIAR TODOS</button>
+<button onclick="baixarTXT()" class="flex-1 bg-black text-white py-3 rounded-full font-black text-xs">BAIXAR .TXT</button>
 </div>
 </div>
 </div>
 </div>
 </section>
 <script>
-const templates=["Ninguem te contou isso sobre GESTACAO, mas...","POV: Voce descobre esse truque na gestacao","Eu testei isso na gestacao por 7 dias","3 ERROS que voce comete na gestacao","O segredo da gestacao que os grandes escondem","Se eu fosse comecar hoje na gestacao, faria isso","Isso me fez ganhar 10x mais","PARE de fazer isso na gestacao agora!","Como consegui isso sem gastar nada","A verdade sobre gestacao"];
-const legendas=["Salva esse video porque voce vai precisar","Comenta EU QUERO","Voce ja sabia dessa?","Essa dica vale ouro!","Parte 2? Comenta QUERO","Me segue pra nao perder"];
-const hashtags="#gestacao #gestante #dica #viral #tiktokbrasil #vpostzilla";
 let todosPosts=[];
 function gerarPosts(){
-  const url=document.getElementById('videoUrl').value.trim();
-  if(!url){alert('Cole o link!');return;}
-  document.getElementById('loading').classList.remove('hidden');
-  document.getElementById('resultado').classList.add('hidden');
-  setTimeout(()=>{document.getElementById('loading').classList.add('hidden');document.getElementById('resultado').classList.remove('hidden');montarVideo(url);criar30Posts();},1000);
+ const url=document.getElementById('videoUrl').value.trim();
+ if(!url){alert('Cole o link!');return;}
+ document.getElementById('resultado').classList.remove('hidden');
+ montarVideo(url);
+ criar30Posts();
+ document.getElementById('resultado').scrollIntoView({behavior:'smooth'});
 }
 function montarVideo(url){
-  const player=document.getElementById('videoPlayer');
-  const idMatch=url.match(/video\/(\d+)/);
-  const videoId=idMatch?idMatch[1]:'';
-  player.innerHTML=`<div class="w-full h-full bg-black"><iframe src="https://www.tiktok.com/embed/${videoId}" class="w-full h-full border-0" allow="autoplay; encrypted-media" allowfullscreen style="min-height:500px"></iframe><div class="p-3 bg-zinc-900 text-[11px] text-white/70">Se nao carregar aqui, clique em ABRIR NO TIKTOK</div></div>`;
-  document.getElementById('btnAbrirTikTok').href=url;
-  document.getElementById('btnBaixar').href=`https://ssstik.io/pt?url=${encodeURIComponent(url)}`;
+ const player=document.getElementById('videoPlayer');
+ const idMatch=url.match(/video\/(\d+)/);
+ const videoId=idMatch?idMatch[1]:'7676220112709471509';
+ 
+ player.innerHTML=`
+   <div class="w-full h-full flex flex-col">
+     <iframe src="https://www.tiktok.com/embed/v2/${videoId}?lang=pt-BR" 
+       class="w-full flex-1 border-0 bg-black" 
+       style="min-height:450px"
+       allowfullscreen></iframe>
+     <a href="${url}" target="_blank" class="bg-[#A3FF12] text-black font-black p-3 text-center text-sm">
+       ▶️ SE NÃO RODAR AQUI, CLIQUE PARA ABRIR NO APP
+     </a>
+   </div>
+ `;
+ document.getElementById('btnAbrirTikTok').href=url;
+ document.getElementById('btnBaixar').href=`https://ssstik.io/pt?url=${encodeURIComponent(url)}`;
+ 
+ // Fallback se iframe ficar preto
+ setTimeout(()=>{
+   if(player.innerHTML.includes('iframe')){
+     const test=player.querySelector('iframe');
+     // Sempre mostra botão grande por cima
+     let fallback=document.createElement('div');
+     fallback.innerHTML=`<div class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center p-6 text-center" style="position:relative; margin-top:-100px; z-index:10;"><a href="${url}" target="_blank" class="bg-white text-black px-8 py-4 rounded-full font-black text-lg animate-bounce">▶️ CLIQUE AQUI PARA RODAR O VÍDEO</a><p class="text-white text-xs mt-4">O TikTok bloqueia player externo, por isso abre direto no app</p></div>`;
+     // Se quiser, descomente a linha abaixo para mostrar botão sempre
+     // player.appendChild(fallback);
+   }
+ },1500);
 }
 function criar30Posts(){
-  todosPosts=[];const grid=document.getElementById('postsGrid');grid.innerHTML='';
-  for(let n=1;n<=30;n++){
-    const gancho=templates[n%templates.length]+` [${n}]`;
-    const legenda=legendas[n%legendas.length];
-    const post={id:n,gancho,legenda,hashtags};todosPosts.push(post);
-    const div=document.createElement('div');div.className='bg-zinc-50 border rounded-2xl p-4 text-sm';
-    div.innerHTML=`<div class="flex justify-between mb-2"><span class="font-black text-xs bg-black text-white px-2 py-1 rounded-full">POST ${n}</span><button onclick="copiar(${n})" class="text-xs bg-white border px-2 py-1 rounded-full">Copiar</button></div><p class="font-bold">${gancho}</p><p class="text-zinc-600 mt-2">${legenda}</p><p class="text-green-700 text-xs mt-2">${hashtags}</p>`;
-    grid.appendChild(div);
-  }
+ todosPosts=[];const grid=document.getElementById('postsGrid');grid.innerHTML='';
+ const templates=["NINGUEM te contou isso sobre GESTACAO mas...","POV: Voce descobre esse truque","3 ERROS que voce comete ❌","O segredo que escondem de voce","PARE de fazer isso AGORA!","Como eu consegui em 7 dias","Isso mudou minha gestacao","Se eu fosse voce, faria isso","Voce esta fazendo ERRADO","A verdade sobre gestacao"];
+ const legendas=["Salva que voce vai precisar 👇","Comenta EU QUERO que te mando","Ja sabia? Comenta","Compartilha com uma gestante"];
+ for(let n=1;n<=30;n++){
+  const gancho=templates[n%templates.length]+` [POST ${n}]`;
+  const legenda=legendas[n%legendas.length];
+  const hashtags="#gestacao #gestante #dica #viral #vpostzilla";
+  const post={id:n,gancho,legenda,hashtags};todosPosts.push(post);
+  const div=document.createElement('div');div.className='bg-zinc-50 border rounded-xl p-3 text-sm';
+  div.innerHTML=`<div class="flex justify-between mb-1"><b class="text-xs bg-black text-white px-2 py-1 rounded-full">POST ${n}</b><button onclick="copiar(${n})" class="text-xs border px-2 rounded-full">Copiar</button></div><p class="font-bold">${gancho}</p><p class="text-zinc-600 text-xs mt-1">${legenda}</p><p class="text-green-700 text-[11px] mt-1">${hashtags}</p>`;
+  grid.appendChild(div);
+ }
 }
 function copiar(n){const p=todosPosts.find(x=>x.id===n);navigator.clipboard.writeText(`${p.gancho}\n\n${p.legenda}\n\n${p.hashtags}`);alert('Copiado POST '+n);}
-function copiarTodos(){const txt=todosPosts.map(p=>`POST ${p.id}:\n${p.gancho}\n${p.legenda}\n${p.hashtags}\n---`).join('\n\n');navigator.clipboard.writeText(txt);alert('30 posts copiados!');}
-function baixarTXT(){const txt=todosPosts.map(p=>`POST ${p.id}:\n${p.gancho}\n${p.legenda}\n${p.hashtags}\n---`).join('\n\n');const blob=new Blob([txt],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='vpostzilla-30-posts.txt';a.click();}
+function copiarTodos(){const txt=todosPosts.map(p=>`POST ${p.id}:\n${p.gancho}\n${p.legenda}\n${p.hashtags}`).join('\n\n---\n\n');navigator.clipboard.writeText(txt);alert('30 posts copiados!');}
+function baixarTXT(){const txt=todosPosts.map(p=>`POST ${p.id}:\n${p.gancho}\n${p.legenda}\n${p.hashtags}`).join('\n\n---\n\n');const blob=new Blob([txt],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='vpostzilla.txt';a.click();}
+function copiarLink(){navigator.clipboard.writeText(document.getElementById('videoUrl').value);alert('Link copiado!');}
 </script>
 </body>
 </html>
