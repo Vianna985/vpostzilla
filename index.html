@@ -2,170 +2,227 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VPOSTZILLA - Demo</title>
+<title>VPOSTZILLA - Editor Igual CapCut</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap" rel="stylesheet">
-<style>body{font-family:Inter} .demo:hover{transform:scale(1.02)} .demo{transition:0.2s}</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+body{font-family:Inter;background:#0B0B0B}
+.scroll::-webkit-scrollbar{width:4px;height:4px}.scroll::-webkit-scrollbar-thumb{background:#2A2A2A;border-radius:10px}
+.template-active{border:2px solid #A3FF12 !important;background:#A3FF12 !important;color:black !important}
+.phone{box-shadow:0 0 0 8px #1E1E1E, 0 30px 80px rgba(0,0,0,0.9)}
+</style>
 </head>
-<body class="bg-[#080808] text-white min-h-screen flex flex-col">
+<body class="text-white h-screen flex flex-col overflow-hidden select-none">
 
-<header class="h-14 bg-[#121212] flex items-center justify-between px-5 border-b border-white/10 sticky top-0 z-50">
-<div class="font-black">✂️ VPOSTZILLA <span class="bg-[#A3FF12] text-black text-[10px] px-2 py-0.5 rounded-full ml-2">COM DEMOS</span></div>
-<button onclick="exportar()" class="bg-white text-black font-black px-6 py-2 rounded-full text-sm">⬇️ Exportar</button>
+<header class="h-[56px] bg-[#141414] border-b border-white/[0.08] flex items-center justify-between px-4 shrink-0">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 bg-white text-black rounded-xl flex items-center justify-center font-black">✂️</div>
+<div class="leading-none"><p class="font-black text-[13px]">VPOSTZILLA STUDIO</p><p class="text-[10px] opacity-40 font-bold tracking-widest">IGUAL CAPCUT</p></div>
+<div class="hidden md:flex ml-6 gap-2 text-[11px] font-bold"><span class="bg-[#A3FF12] text-black px-3 py-1 rounded-full">● AO VIVO</span><span id="headerStatus" class="bg-white/10 px-3 py-1 rounded-full">6 demos prontos</span></div>
+</div>
+<div class="flex gap-2">
+<button onclick="voltarTemplates()" class="hidden md:block bg-white/10 px-4 py-2 rounded-full text-xs font-bold">Templates</button>
+<button onclick="exportar()" class="bg-white text-black font-black px-6 py-2.5 rounded-full text-sm">Exportar 9:16 ⬇️</button>
+</div>
 </header>
 
-<!-- SEÇÃO DEMOS -->
-<div id="demos" class="p-6">
-<h1 class="text-xl font-black">Escolha um vídeo demo para começar</h1>
-<p class="text-sm opacity-50 mt-1">Clique em USAR ESSE e edite por cima - igual CapCut</p>
+<div class="flex flex-1 overflow-hidden">
 
-<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mt-5">
-<!-- DEMO 1 -->
-<div class="demo bg-[#151515] rounded-2xl overflow-hidden border border-white/10">
-<div class="h-32 bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-3xl">🥊</div>
-<div class="p-3"><p class="text-xs font-black">Pugilista Boxe</p><p class="text-[10px] opacity-50">9:16 • 8s</p><button onclick="usarDemo(0)" class="w-full mt-2 bg-white text-black font-black py-2 rounded-full text-xs">USAR ESSE</button></div>
-</div>
-<!-- DEMO 2 -->
-<div class="demo bg-[#151515] rounded-2xl overflow-hidden border border-white/10">
-<div class="h-32 bg-gradient-to-br from-orange-600 to-red-600 flex items-center justify-center text-3xl">🥋</div>
-<div class="p-3"><p class="text-xs font-black">Muay Thai Espaço</p><p class="text-[10px] opacity-50">9:16 • 7s</p><button onclick="usarDemo(1)" class="w-full mt-2 bg-white text-black font-black py-2 rounded-full text-xs">USAR ESSE</button></div>
-</div>
-<!-- DEMO 3 -->
-<div class="demo bg-[#151515] rounded-2xl overflow-hidden border border-white/10">
-<div class="h-32 bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center text-3xl">🥋</div>
-<div class="p-3"><p class="text-xs font-black">Karatê Galáxia</p><p class="text-[10px] opacity-50">9:16 • 6s</p><button onclick="usarDemo(2)" class="w-full mt-2 bg-white text-black font-black py-2 rounded-full text-xs">USAR ESSE</button></div>
-</div>
-<!-- DEMO 4 -->
-<div class="demo bg-[#151515] rounded-2xl overflow-hidden border border-white/10">
-<div class="h-32 bg-gradient-to-br from-zinc-700 to-black flex items-center justify-center text-3xl">🥊</div>
-<div class="p-3"><p class="text-xs font-black">MMA Brutal</p><p class="text-[10px] opacity-50">9:16 • 9s</p><button onclick="usarDemo(3)" class="w-full mt-2 bg-white text-black font-black py-2 rounded-full text-xs">USAR ESSE</button></div>
-</div>
-<!-- DEMO 5 -->
-<div class="demo bg-[#151515] rounded-2xl overflow-hidden border border-white/10">
-<div class="h-32 bg-black flex items-center justify-center"><img id="thumb4" class="w-full h-full object-cover"></div>
-<div class="p-3"><p class="text-xs font-black">Goku Aura</p><p class="text-[10px] opacity-50">Imagem • Demo</p><button onclick="usarDemo(4)" class="w-full mt-2 bg-[#A3FF12] text-black font-black py-2 rounded-full text-xs">USAR ESSE</button></div>
-</div>
-<!-- DEMO 6 -->
-<div class="demo bg-[#151515] rounded-2xl overflow-hidden border-2 border-dashed border-white/20 flex flex-col items-center justify-center p-4 h-[184px] cursor-pointer hover:border-white/40" onclick="document.getElementById('up').click()">
-<span class="text-3xl">⬆️</span><p class="text-xs font-black mt-2 text-center">Subir seu próprio vídeo</p><p class="text-[10px] opacity-50">ou arraste aqui</p>
-</div>
+<!-- BARRA LATERAL ICONES -->
+<div class="w-[72px] bg-[#141414] border-r border-white/[0.08] flex flex-col items-center py-4 gap-3 shrink-0">
+<button onclick="tab('templates')" id="btn-templates" class="template-active w-[56px] h-[56px] rounded-2xl flex flex-col items-center justify-center gap-1 text-[10px] font-black"><span class="text-[18px]">🔥</span>Demos</button>
+<button onclick="tab('midia')" id="btn-midia" class="w-[56px] h-[56px] bg-[#1E1E1E] rounded-2xl flex flex-col items-center justify-center gap-1 text-[10px] font-bold hover:bg-white/10"><span class="text-[18px]">📁</span>Mídia</button>
+<button onclick="tab('texto')" id="btn-texto" class="w-[56px] h-[56px] bg-[#1E1E1E] rounded-2xl flex flex-col items-center justify-center gap-1 text-[10px] font-bold hover:bg-white/10"><span class="text-[18px]">Aa</span>Texto</button>
+<button onclick="tab('audio')" id="btn-audio" class="w-[56px] h-[56px] bg-[#1E1E1E] rounded-2xl flex flex-col items-center justify-center gap-1 text-[10px] font-bold hover:bg-white/10"><span class="text-[18px]">🎵</span>Áudio</button>
+<div class="mt-auto w-[56px] h-[1px] bg-white/10"></div>
+<button onclick="document.getElementById('up').click()" class="w-[56px] h-[56px] bg-[#A3FF12] text-black rounded-2xl flex flex-col items-center justify-center gap-1 text-[10px] font-black"><span class="text-[18px]">⬆️</span>Importar</button>
 </div>
 
-<div class="mt-8 bg-[#151515] rounded-2xl p-4 border border-white/10 flex items-center gap-4">
-<span class="text-2xl">💡</span><div><p class="text-sm font-black">Como funciona?</p><p class="text-xs opacity-60">1. Clica em USAR ESSE no vídeo demo • 2. Escreve seu texto • 3. Exporta. O demo vira base e você cria outros por cima.</p></div>
-</div>
-</div>
+<!-- PAINEL ESQUERDO -->
+<div class="w-[320px] bg-[#121212] border-r border-white/[0.08] flex flex-col overflow-hidden shrink-0">
 
-<!-- EDITOR -->
-<div id="editor" class="hidden flex-1 flex flex-col lg:flex-row overflow-hidden">
-<div class="flex flex-1">
-<div class="w-[80px] bg-[#121212] border-r border-white/10 flex flex-col items-center py-6 gap-4">
-<button onclick="voltarDemos()" class="text-[10px] font-bold opacity-60">⬅️<br>DEMOS</button>
-<button onclick="document.getElementById('up').click()" class="w-14 h-14 bg-white text-black rounded-2xl font-black text-[10px]">📁<br>MÍDIA</button>
-<button onclick="document.getElementById('txt').focus()" class="w-14 h-14 bg-zinc-800 rounded-2xl font-black text-[10px]">🔤<br>TEXTO</button>
-<button onclick="play()" class="w-14 h-14 bg-zinc-800 rounded-2xl font-black text-[10px]"><span id="playIcon">▶️</span><br>PLAY</button>
+<!-- ABA TEMPLATES -->
+<div id="panel-templates" class="flex-1 flex flex-col overflow-hidden">
+<div class="p-4 border-b border-white/[0.06]">
+<p class="font-black text-[12px]">TEMPLATES DEMO</p><p class="text-[11px] opacity-50 mt-1">Clique para usar como base e criar por cima</p>
+<div class="flex gap-1.5 mt-3"><button class="bg-white text-black text-[11px] font-black px-3 py-1.5 rounded-full">Todos</button><button class="bg-white/10 text-[11px] font-bold px-3 py-1.5 rounded-full">Luta 🥊</button><button class="bg-white/10 text-[11px] font-bold px-3 py-1.5 rounded-full">Espaço 🚀</button></div>
 </div>
-<div class="flex-1 bg-black flex flex-col items-center justify-center p-4 gap-3">
-<div class="rounded-[24px] overflow-hidden border-[6px] border-zinc-800 bg-zinc-900">
-<canvas id="c" width="720" height="1280" class="h-[58vh] aspect-[9/16] block bg-black"></canvas>
+<div class="flex-1 overflow-y-auto scroll p-3 grid grid-cols-2 gap-3 content-start">
+<!-- DEMO ITEM -->
+<div onclick="usarTemplate(0)" class="group cursor-pointer bg-[#1A1A1A] rounded-[18px] overflow-hidden border border-white/[0.06] hover:border-white/20">
+<div class="h-[140px] relative"><img src="https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=400" class="w-full h-full object-cover"><div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div><span class="absolute top-2 left-2 bg-[#A3FF12] text-black text-[9px] font-black px-2 py-1 rounded-full">MAIS USADO</span><span class="absolute bottom-2 left-2 text-[11px] font-black">Boxe Espacial</span></div><div class="p-2.5 flex justify-between items-center"><span class="text-[10px] opacity-60">9:16 • 8s</span><span class="bg-white text-black text-[10px] font-black px-3 py-1 rounded-full group-hover:bg-[#A3FF12]">USAR</span></div>
 </div>
-<input id="time" type="range" min="0" max="100" value="0" class="w-full max-w-[360px] accent-white" oninput="seek(this.value)">
+<div onclick="usarTemplate(1)" class="group cursor-pointer bg-[#1A1A1A] rounded-[18px] overflow-hidden border border-white/[0.06] hover:border-white/20">
+<div class="h-[140px] relative"><img src="https://images.unsplash.com/photo-1555597673-b21d5c935865?w=400" class="w-full h-full object-cover"><div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div><span class="absolute bottom-2 left-2 text-[11px] font-black">Muay Thai Fire</span></div><div class="p-2.5 flex justify-between items-center"><span class="text-[10px] opacity-60">9:16 • 7s</span><span class="bg-white text-black text-[10px] font-black px-3 py-1 rounded-full group-hover:bg-[#A3FF12]">USAR</span></div>
 </div>
+<div onclick="usarTemplate(2)" class="group cursor-pointer bg-[#1A1A1A] rounded-[18px] overflow-hidden border border-white/[0.06] hover:border-white/20">
+<div class="h-[140px] relative"><img src="https://images.unsplash.com/photo-1593352216850-42a0b3b1e1c5?w=400" class="w-full h-full object-cover"><div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div><span class="absolute bottom-2 left-2 text-[11px] font-black">Karatê Aura</span></div><div class="p-2.5 flex justify-between items-center"><span class="text-[10px] opacity-60">9:16 • 6s</span><span class="bg-white text-black text-[10px] font-black px-3 py-1 rounded-full group-hover:bg-[#A3FF12]">USAR</span></div>
 </div>
-
-<div class="w-full lg:w-[320px] bg-[#121212] border-t lg:border-t-0 lg:border-l border-white/10 p-5">
-<p class="font-black text-sm">✏️ EDITANDO POR CIMA DO DEMO</p>
-<input id="txt" placeholder="Digite seu texto... Ex: PARTE 2" class="w-full mt-3 bg-black border-2 border-white/20 rounded-2xl p-4 text-sm font-black focus:border-[#A3FF12] outline-none">
-
-<div class="grid grid-cols-2 gap-2 mt-3">
-<button onclick="aplicarTexto('top')" class="bg-zinc-800 py-3 rounded-xl text-xs font-black">⬆️ Topo</button>
-<button onclick="aplicarTexto('bottom')" class="bg-white text-black py-3 rounded-xl text-xs font-black">⬇️ Baixo</button>
+<div onclick="usarTemplate(3)" class="group cursor-pointer bg-[#1A1A1A] rounded-[18px] overflow-hidden border border-white/[0.06] hover:border-white/20">
+<div class="h-[140px] relative"><img src="https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=400" class="w-full h-full object-cover"><div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div><span class="absolute bottom-2 left-2 text-[11px] font-black">MMA Galáxia</span></div><div class="p-2.5 flex justify-between items-center"><span class="text-[10px] opacity-60">9:16 • 9s</span><span class="bg-white text-black text-[10px] font-black px-3 py-1 rounded-full group-hover:bg-[#A3FF12]">USAR</span></div>
 </div>
-
-<button onclick="aplicarTexto('bottom')" class="w-full mt-3 bg-[#A3FF12] text-black font-black py-4 rounded-full">APLICAR NO VÍDEO</button>
-<button onclick="trocarDemo()" class="w-full mt-2 bg-zinc-800 py-3 rounded-full text-xs font-bold">🔄 Trocar demo base</button>
-
-<div class="mt-5 p-3 bg-black rounded-2xl border border-white/10 text-[11px] leading-relaxed">
-<b>🔥 Dica de viral:</b><br>Use o demo de luta e escreva:<br>"ELE DESAFIOU O CAMPEÃO E..."<br>"PARTE 2 JÁ ESTÁ NO PERFIL"
+<div onclick="usarTemplate(4)" class="group cursor-pointer bg-[#1A1A1A] rounded-[18px] overflow-hidden border border-white/[0.06] hover:border-white/20">
+<div class="h-[140px] relative bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-4xl">🚀<div class="absolute bottom-2 left-2 text-[11px] font-black">Espaço Épico</div></div><div class="p-2.5 flex justify-between items-center"><span class="text-[10px] opacity-60">Vídeo • 10s</span><span class="bg-[#A3FF12] text-black text-[10px] font-black px-3 py-1 rounded-full">USAR</span></div>
+</div>
+<div onclick="document.getElementById('up').click()" class="group cursor-pointer bg-transparent rounded-[18px] border-2 border-dashed border-white/20 hover:border-white/40 h-[184px] flex flex-col items-center justify-center gap-2">
+<span class="text-2xl">⬆️</span><span class="text-[11px] font-black">Seu vídeo</span><span class="text-[10px] opacity-50">Importar</span>
 </div>
 </div>
 </div>
 
-<input type="file" id="up" accept="video/*,image/*" class="hidden" onchange="load(event)">
+<!-- ABA MÍDIA -->
+<div id="panel-midia" class="hidden flex-1 flex-col">
+<div class="p-4"><div onclick="document.getElementById('up').click()" class="border-2 border-dashed border-white/20 rounded-2xl py-8 flex flex-col items-center gap-2 hover:bg-white/[0.03] cursor-pointer"><span class="text-xl">📁</span><span class="text-xs font-black">Importar mídia</span><span class="text-[10px] opacity-50">Arraste aqui</span></div></div>
+<div id="bib" class="flex-1 overflow-y-auto scroll p-3 grid grid-cols-2 gap-2 content-start"></div>
+</div>
+
+<!-- ABA TEXTO -->
+<div id="panel-texto" class="hidden flex-1 flex-col p-4 overflow-y-auto scroll">
+<p class="font-black text-[11px] opacity-60">ESTILOS PRONTOS (clique)</p>
+<div class="grid grid-cols-1 gap-2 mt-3">
+<button onclick="aplicarEstilo('viral')" class="bg-white text-black font-black text-left px-4 py-3 rounded-2xl text-sm">🔥 VIRAL<br><span class="text-[11px] font-bold opacity-60">Branco com contorno preto</span></button>
+<button onclick="aplicarEstilo('neon')" class="bg-[#1A1A1A] border border-white/10 text-left px-4 py-3 rounded-2xl text-sm font-black">⚡ NEON<br><span class="text-[11px] opacity-60">Amarelo CapCut</span></button>
+<button onclick="aplicarEstilo('legenda')" class="bg-[#1A1A1A] border border-white/10 text-left px-4 py-3 rounded-2xl text-sm font-black">💬 LEGENDA<br><span class="text-[11px] opacity-60">Embaixo com fundo</span></button>
+</div>
+</div>
+
+<!-- ABA AUDIO -->
+<div id="panel-audio" class="hidden flex-1 p-4">
+<button onclick="document.getElementById('audio').click()" class="w-full bg-white/10 py-3 rounded-full text-xs font-bold">🎵 Importar música</button>
+<p class="text-[11px] opacity-40 mt-4">Músicas virais em breve...</p>
+</div>
+</div>
+
+<!-- CENTRO -->
+<div class="flex-1 bg-[#0B0B0B] flex flex-col items-center justify-center relative p-4 gap-4">
+<div class="phone rounded-[28px] overflow-hidden bg-black relative">
+<canvas id="c" width="720" height="1280" class="h-[62vh] max-h-[640px] aspect-[9/16] block bg-[#101010]"></canvas>
+<div id="empty" class="absolute inset-0 flex flex-col items-center justify-center text-center p-8 bg-[#101010]">
+<p class="text-5xl">✨</p><p class="font-black mt-4">Escolha um demo na esquerda</p><p class="text-xs opacity-50 mt-2">Clique em USAR em qualquer template<br>e edite por cima</p>
+</div>
+</div>
+
+<div class="w-full max-w-[400px] bg-[#181818] rounded-full flex items-center gap-3 px-3 py-2 border border-white/10">
+<button onclick="play()" id="playBtn" class="w-8 h-8 bg-white text-black rounded-full flex items-center justify-center font-black text-xs">▶</button>
+<input id="time" type="range" min="0" max="100" value="0" class="flex-1 accent-white h-1" oninput="seek(this.value)">
+<span id="timer" class="text-[11px] font-bold opacity-70">00:00</span>
+<button onclick="exportar()" class="bg-[#A3FF12] text-black text-[11px] font-black px-4 py-1.5 rounded-full">Exportar</button>
+</div>
+</div>
+
+<!-- DIREITA -->
+<div class="w-[320px] bg-[#121212] border-l border-white/[0.08] flex flex-col shrink-0">
+<div class="p-5 flex-1 overflow-y-auto scroll">
+<div class="bg-[#A3FF12] text-black rounded-2xl p-4">
+<p class="font-black text-[12px]">COMO USAR:</p><p class="text-[11px] mt-1 font-bold leading-snug">1️⃣ Escolha um demo na esquerda<br>2️⃣ Digite seu texto abaixo<br>3️⃣ Clique Exportar</p>
+</div>
+
+<p class="font-black text-[11px] mt-6 opacity-60">SEU TEXTO</p>
+<textarea id="txt" placeholder="Ex: PARTE 2 JÁ ESTÁ NO PERFIL! 👇" class="w-full mt-2 bg-[#1C1C1C] border border-white/10 rounded-2xl p-4 text-sm font-bold h-24 outline-none focus:border-[#A3FF12] resize-none"></textarea>
+
+<div class="flex gap-2 mt-3">
+<button onclick="setPos('top')" class="flex-1 bg-[#1C1C1C] border border-white/10 py-2.5 rounded-xl text-[11px] font-bold">⬆️ Topo</button>
+<button onclick="setPos('bottom')" class="flex-1 bg-white text-black py-2.5 rounded-xl text-[11px] font-black">⬇️ Baixo</button>
+</div>
+
+<button onclick="aplicarTexto()" class="w-full mt-3 bg-white text-black font-black py-4 rounded-full text-sm">APLICAR TEXTO</button>
+
+<div class="mt-4 grid grid-cols-3 gap-2">
+<button onclick="setSize(-10)" class="bg-[#1C1C1C] py-2.5 rounded-xl text-xs font-bold">A- menor</button>
+<button onclick="setSize(10)" class="bg-[#1C1C1C] py-2.5 rounded-xl text-xs font-bold">A+ maior</button>
+<button onclick="limparTexto()" class="bg-[#1C1C1C] py-2.5 rounded-xl text-xs font-bold">🗑️ Limpar</button>
+</div>
+
+<div class="mt-6 p-4 bg-black rounded-2xl border border-white/10">
+<p class="text-[11px] font-black">💡 IDEIAS VIRAIS:</p>
+<div class="mt-2 space-y-1.5 text-[11px] opacity-70">
+<p onclick="usarIdeia('ELE DESAFIOU O CAMPEÃO...')" class="hover:text-white cursor-pointer">• ELE DESAFIOU O CAMPEÃO...</p>
+<p onclick="usarIdeia('VOCÊ PERDOARIA? COMENTA 👇')" class="hover:text-white cursor-pointer">• VOCÊ PERDOARIA? COMENTA 👇</p>
+<p onclick="usarIdeia('PARTE 2 NO PERFIL')" class="hover:text-white cursor-pointer">• PARTE 2 NO PERFIL</p>
+</div>
+</div>
+</div>
+
+<div class="p-3 border-t border-white/10">
+<div id="track" class="h-12 bg-black rounded-xl border border-white/10 flex items-center px-2 gap-2 overflow-x-auto scroll"></div>
+</div>
+</div>
+</div>
+
+<input type="file" id="up" accept="video/*,image/*" multiple class="hidden" onchange="load(event)">
+<input type="file" id="audio" accept="audio/*" class="hidden" onchange="loadAudio(event)">
 <video id="v" class="hidden" crossorigin="anonymous" muted loop playsinline></video>
-<canvas id="thumbCanvas" class="hidden"></canvas>
 
 <script>
-// DEMOS - URLs de imagens/vídeos que você pode usar de base
-// Estou usando suas imagens de pugilista geradas como demo
-const demos=[
-{type:'image', url:'https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=720', label:'Pugilista Boxe', color:'#7c3aed'},
-{type:'image', url:'https://images.unsplash.com/photo-1555597673-b21d5c935865?w=720', label:'Muay Thai', color:'#ea580c'},
-{type:'image', url:'https://images.unsplash.com/photo-1593352216850-42a0b3b1e1c5?w=720', label:'Karate', color:'#2563eb'},
-{type:'image', url:'https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=720', label:'MMA', color:'#18181b'},
-{type:'video', url:'https://www.w3schools.com/html/mov_bbb.mp4', label:'Goku Aura'},
-{type:'image', url:'', label:'Seu vídeo'}
+const canvas=document.getElementById('c'), ctx=canvas.getContext('2d'), video=document.getElementById('v');
+let textos=[], current={url:'',type:''}, playing=false, dur=8, audioEl=null;
+let estiloAtual={color:'#fff', stroke:true, size:64, y:1050};
+
+const templates=[
+{url:'https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=720', type:'image'},
+{url:'https://images.unsplash.com/photo-1555597673-b21d5c935865?w=720', type:'image'},
+{url:'https://images.unsplash.com/photo-1593352216850-42a0b3b1e1c5?w=720', type:'image'},
+{url:'https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=720', type:'image'},
+{url:'https://www.w3schools.com/html/mov_bbb.mp4', type:'video'},
 ];
 
-const canvas=document.getElementById('c'), ctx=canvas.getContext('2d'), video=document.getElementById('v');
-let textos=[], currentDemo=null, playing=false, dur=8;
-
-function usarDemo(i){
- currentDemo=demos[i];
- document.getElementById('demos').classList.add('hidden');
- document.getElementById('editor').classList.remove('hidden');
- document.getElementById('editor').classList.add('flex');
- 
- if(currentDemo.type=='video'){
-  video.src=currentDemo.url; video.onloadedmetadata=()=>{dur=video.duration; video.play(); playing=true; loop();};
- } else {
-  const img=new Image(); img.crossOrigin='anonymous';
-  img.onload=()=>{ ctx.clearRect(0,0,720,1280); ctx.drawImage(img,0,0,720,1280); drawTextos(); };
-  img.src=currentDemo.url;
+function tab(t){
+ document.querySelectorAll('[id^=panel-]').forEach(p=>p.classList.add('hidden'));
+ document.getElementById('panel-'+t).classList.remove('hidden'); document.getElementById('panel-'+t).classList.add('flex');
+ document.querySelectorAll('[id^=btn-]').forEach(b=>b.classList.remove('template-active')); 
+ document.getElementById('btn-'+t).classList.add('template-active');
+}
+function usarTemplate(i){
+ const tpl=templates[i]; current=tpl;
+ document.getElementById('empty').style.display='none';
+ tab('texto');
+ if(tpl.type=='video'){ video.src=tpl.url; video.onloadedmetadata=()=>{dur=video.duration; video.play(); playing=true; document.getElementById('playBtn').textContent='⏸'; loop();}; }
+ else { const img=new Image(); img.crossOrigin='anonymous'; img.onload=()=>{ctx.clearRect(0,0,720,1280); ctx.drawImage(img,0,0,720,1280); draw(); dur=8;}; img.src=tpl.url; }
+ addTrack(tpl.url, i);
+ document.getElementById('headerStatus').textContent='Editando: Demo '+(i+1);
+}
+function addTrack(url,i){
+ const el=document.createElement('div'); el.className='bg-white text-black text-[10px] font-black px-3 py-2 rounded-lg whitespace-nowrap'; el.textContent='DEMO '+(i+1)+' • base'; document.getElementById('track').appendChild(el);
+}
+function load(e){
+ for(const f of e.target.files){
+  const url=URL.createObjectURL(f); const type=f.type.startsWith('video')?'video':'image';
+  current={url,type}; document.getElementById('empty').style.display='none';
+  if(type=='video'){ video.src=url; video.onloadedmetadata=()=>{dur=video.duration; video.play(); playing=true; loop(); document.getElementById('playBtn').textContent='⏸';}; }
+  else { const img=new Image(); img.onload=()=>{ctx.clearRect(0,0,720,1280); ctx.drawImage(img,0,0,720,1280); draw();}; img.src=url; }
+  const div=document.createElement('div'); div.className='bg-black rounded-xl overflow-hidden border border-white/10 h-16'; div.innerHTML=`<img src="${url}" class="w-full h-full object-cover">`; document.getElementById('bib').appendChild(div);
+  tab('texto');
  }
 }
-function voltarDemos(){ document.getElementById('editor').classList.add('hidden'); document.getElementById('demos').classList.remove('hidden'); video.pause(); }
-function trocarDemo(){ voltarDemos(); }
-
-function load(e){
- const file=e.target.files[0]; if(!file) return;
- const url=URL.createObjectURL(file);
- const isVideo=file.type.startsWith('video');
- document.getElementById('demos').classList.add('hidden');
- document.getElementById('editor').classList.remove('hidden');
- document.getElementById('editor').classList.add('flex');
- if(isVideo){ video.src=url; video.onloadedmetadata=()=>{dur=video.duration; video.play(); playing=true; loop();}; }
- else { const img=new Image(); img.onload=()=>{ctx.clearRect(0,0,720,1280); ctx.drawImage(img,0,0,720,1280); drawTextos();}; img.src=url; }
-}
-
-function aplicarTexto(pos){
+function aplicarTexto(){
  const t=document.getElementById('txt').value; if(!t) return alert('Digite um texto!');
- const y=pos=='top'?200:1100;
- textos=[{txt:t, x:360, y:y, size:64}];
+ textos=[{txt:t, x:360, y:estiloAtual.y, size:estiloAtual.size, color:estiloAtual.color, stroke:estiloAtual.stroke}];
  draw();
 }
-function drawTextos(){
- textos.forEach(o=>{
-  ctx.font=`900 ${o.size}px Inter`; ctx.textAlign='center';
-  ctx.lineWidth=12; ctx.strokeStyle='black'; ctx.strokeText(o.txt.toUpperCase(),o.x,o.y);
-  ctx.fillStyle='white'; ctx.fillText(o.txt.toUpperCase(),o.x,o.y);
- });
+function aplicarEstilo(s){
+ if(s=='viral'){ estiloAtual={color:'#fff', stroke:true, size:68, y:1050}; }
+ if(s=='neon'){ estiloAtual={color:'#A3FF12', stroke:true, size:72, y:1050}; }
+ if(s=='legenda'){ estiloAtual={color:'#fff', stroke:false, size:48, y:1100}; }
+ if(textos[0]){ textos[0].color=estiloAtual.color; textos[0].size=estiloAtual.size; textos[0].y=estiloAtual.y; draw(); }
 }
-function draw(){ ctx.clearRect(0,0,720,1280); if(video.src && video.readyState>=2) ctx.drawImage(video,0,0,720,1280); drawTextos(); }
-function loop(){ if(!video.src) return; document.getElementById('time').value=video.currentTime/dur*100; draw(); if(playing) requestAnimationFrame(loop); }
-function play(){ if(video.src){ if(video.paused){video.play(); playing=true; loop(); document.getElementById('playIcon').textContent='⏸️';} else {video.pause(); playing=false; document.getElementById('playIcon').textContent='▶️';} } }
+function setPos(p){ estiloAtual.y=p=='top'?220:1100; if(textos[0]){textos[0].y=estiloAtual.y; draw();} }
+function setSize(d){ if(!textos[0]) return; textos[0].size+=d; draw(); }
+function limparTexto(){ textos=[]; document.getElementById('txt').value=''; draw(); }
+function usarIdeia(t){ document.getElementById('txt').value=t; aplicarTexto(); }
+function draw(){ ctx.clearRect(0,0,720,1280); if(video.src && video.readyState>=2) ctx.drawImage(video,0,0,720,1280); textos.forEach(o=>{ctx.font=`900 ${o.size}px Inter`; ctx.textAlign='center'; if(o.stroke){ctx.lineWidth=14; ctx.strokeStyle='black'; ctx.strokeText(o.txt.toUpperCase(),o.x,o.y);} ctx.fillStyle=o.color; ctx.fillText(o.txt.toUpperCase(),o.x,o.y);}); }
+function loop(){ if(!video.src) return; document.getElementById('time').value=video.currentTime/dur*100; document.getElementById('timer').textContent=video.currentTime.toFixed(1)+'s'; draw(); if(playing) requestAnimationFrame(loop); }
+function play(){ if(!video.src && textos.length==0) return alert('Escolha um demo primeiro!'); if(video.src){ if(video.paused){video.play(); playing=true; document.getElementById('playBtn').textContent='⏸'; loop();} else {video.pause(); playing=false; document.getElementById('playBtn').textContent='▶';} } }
 function seek(v){ if(!video.src) return; video.currentTime=dur*v/100; draw(); }
+function voltarTemplates(){ tab('templates'); }
+function loadAudio(e){ audioEl=new Audio(URL.createObjectURL(e.target.files[0])); audioEl.play(); }
 function exportar(){
- if(!video.src && textos.length==0) return alert('Escolha um demo primeiro!');
- const stream=canvas.captureStream(30);
- const rec=new MediaRecorder(stream,{mimeType:'video/webm'}); let chunks=[];
+ if(!current.url && textos.length==0) return alert('Escolha um demo na esquerda primeiro! Clique em USAR');
+ const stream=canvas.captureStream(30); let chunks=[]; const rec=new MediaRecorder(stream,{mimeType:'video/webm'});
  rec.ondataavailable=e=>chunks.push(e.data);
- rec.onstop=()=>{ const b=new Blob(chunks,{type:'video/webm'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='video-demo-editado.webm'; a.click(); alert('✅ Vídeo criado por cima do demo! Pronto pro TikTok'); };
- rec.start(); if(video.src){video.currentTime=0; video.play();} setTimeout(()=>{rec.stop(); if(video.src) video.pause();}, dur*1000||7000);
+ rec.onstop=()=>{const blob=new Blob(chunks,{type:'video/webm'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='vpostzilla-editado.webm'; a.click();};
+ rec.start(); if(video.src){video.currentTime=0; video.play();} setTimeout(()=>{rec.stop(); if(video.src) video.pause();}, dur*1000||8000);
+ document.getElementById('headerStatus').textContent='⏳ Exportando...'; setTimeout(()=>document.getElementById('headerStatus').textContent='✅ Pronto!', 8000);
 }
-
-// Preview thumb
-const imgThumb=new Image(); imgThumb.src=demos[0].url;
 </script>
 </body>
 </html>
