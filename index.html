@@ -2,133 +2,73 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CAPCUT CLONE - Editor Pro</title>
+<title>Editor - Igual CapCut</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap" rel="stylesheet">
-<style>body{font-family:Inter} .scroll::-webkit-scrollbar{height:6px} .scroll::-webkit-scrollbar-thumb{background:#A855F7;border-radius:10px}</style>
 </head>
-<body class="bg-[#0F0F0F] text-white h-screen flex flex-col overflow-hidden">
+<body class="bg-[#0F0F0F] text-white h-screen flex flex-col">
 
-<!-- TOPO ESTILO CAPCUT -->
-<header class="h-14 bg-[#1A1A1A] border-b border-white/10 flex items-center justify-between px-4">
-<div class="flex items-center gap-3"><div class="w-8 h-8 bg-white text-black rounded-lg flex items-center justify-center font-black">✂️</div><b>CAPCUT WEB</b><span class="bg-[#A855F7] text-xs px-2 py-1 rounded-full">PRO</span></div>
-<div class="flex gap-2"><button onclick="exportar()" class="bg-white text-black font-black px-6 py-2 rounded-full text-sm">⬇️ Exportar</button><button onclick="exportar()" class="bg-[#A855F7] text-white font-black px-6 py-2 rounded-full text-sm">🚀 Exportar 9:16</button></div>
+<header class="h-14 bg-[#1A1A1A] border-b border-white/10 flex justify-between items-center px-4">
+<b>✂️ EDITOR</b>
+<button onclick="exportar()" class="bg-white text-black font-black px-6 py-2 rounded-full text-sm">Exportar</button>
 </header>
 
 <div class="flex flex-1 overflow-hidden">
-<!-- FERRAMENTAS ESQUERDA -->
-<div class="w-[80px] bg-[#1A1A1A] border-r border-white/10 flex flex-col items-center py-4 gap-6">
-<button class="flex flex-col items-center gap-1 text-[10px] font-bold" onclick="document.getElementById('upload').click()"><span class="text-2xl">📁</span>Mídia</button>
-<button class="flex flex-col items-center gap-1 text-[10px] font-bold" onclick="addTexto()"><span class="text-2xl">🔤</span>Texto</button>
-<button class="flex flex-col items-center gap-1 text-[10px] font-bold" onclick="addSticker('🔥')"><span class="text-2xl">😎</span>Stickers</button>
-<button class="flex flex-col items-center gap-1 text-[10px] font-bold" onclick="efeito('anime')"><span class="text-2xl">✨</span>Efeitos</button>
-<button class="flex flex-col items-center gap-1 text-[10px] font-bold" onclick="document.getElementById('audio').click()"><span class="text-2xl">🎵</span>Áudio</button>
-<input type="file" id="upload" accept="video/*,image/*" multiple class="hidden" onchange="loadMidia(event)">
+<!-- esquerda -->
+<div class="w-[70px] bg-[#1A1A1A] border-r border-white/10 flex flex-col items-center py-4 gap-5 text-[10px] font-bold">
+<button onclick="document.getElementById('up').click()">📁<br>Mídia</button>
+<button onclick="addTexto()">🔤<br>Texto</button>
+<button onclick="document.getElementById('audio').click()">🎵<br>Áudio</button>
+<input type="file" id="up" accept="video/*,image/*" multiple class="hidden" onchange="load(event)">
 <input type="file" id="audio" accept="audio/*" class="hidden" onchange="loadAudio(event)">
 </div>
 
-<!-- BIBLIOTECA -->
-<div class="w-[260px] bg-[#181818] border-r border-white/10 p-3 overflow-y-auto">
-<p class="font-black text-xs">MÍDIAS</p>
-<div id="biblioteca" class="grid grid-cols-2 gap-2 mt-2">
-<div class="bg-zinc-800 rounded-xl h-20 flex items-center justify-center text-[10px] border border-dashed">Arraste ou clique 📁</div>
+<!-- preview -->
+<div class="flex-1 flex flex-col">
+<div class="flex-1 bg-black flex items-center justify-center p-4">
+<canvas id="c" width="720" height="1280" class="h-[60vh] aspect-[9/16] bg-zinc-900 rounded-xl border border-white/10"></canvas>
+<video id="v" class="hidden"></video>
 </div>
-<p class="font-black text-xs mt-5">TEMPLATES VIRAIS (igual CapCut)</p>
-<div class="space-y-2 mt-2">
-<button onclick="template('novela')" class="w-full bg-[#A3FF12] text-black font-black text-[11px] py-3 rounded-xl">🎭 Novela de Frutas</button>
-<button onclick="template('pugilista')" class="w-full bg-white text-black font-black text-[11px] py-3 rounded-xl">🥊 Pugilista Espaço</button>
-<button onclick="template('goku')" class="w-full bg-zinc-800 text-white font-black text-[11px] py-3 rounded-xl border">🔥 Goku Aura</button>
+
+<div class="h-[180px] bg-[#1A1A1A] border-t border-white/10 p-2">
+<div class="flex gap-3 items-center">
+<input type="range" id="time" min="0" max="100" value="0" class="flex-1 accent-white" oninput="seek(this.value)">
+<button onclick="play()" id="btn" class="bg-white text-black w-8 h-8 rounded-full font-black">▶</button>
+</div>
+<div id="timeline" class="mt-3 h-12 bg-black rounded-xl border border-white/10 p-1 flex gap-1 overflow-x-auto"></div>
 </div>
 </div>
 
-<!-- PREVIEW CENTRAL -->
-<div class="flex-1 flex flex-col bg-[#0F0F0F]">
-<div class="flex-1 flex items-center justify-center p-4 bg-[#111]">
-<div class="relative">
-<canvas id="preview" width="720" height="1280" class="h-[58vh] aspect-[9/16] bg-black rounded-2xl border border-white/10"></canvas>
-<div id="textLayer" class="absolute inset-0 pointer-events-none"></div>
-<video id="v" class="hidden" crossorigin="anonymous"></video>
-</div>
-</div>
-
-<!-- TIMELINE ESTILO CAPCUT -->
-<div class="h-[220px] bg-[#1A1A1A] border-t border-white/10 flex flex-col">
-<div class="h-10 flex items-center px-4 gap-3 border-b border-white/10">
-<span class="text-xs font-black">TIMELINE</span>
-<input type="range" id="time" min="0" max="100" value="0" class="flex-1 accent-[#A855F7]" oninput="seek(this.value)">
-<span id="timer" class="text-[11px] font-bold">00:00 / 00:10</span>
-<button onclick="playPause()" id="play" class="bg-white text-black w-8 h-8 rounded-full font-black">▶</button>
-</div>
-<div class="flex-1 overflow-x-auto scroll p-2 space-y-2" id="timeline">
-<div class="flex items-center gap-2"><span class="text-[10px] w-12">V1</span><div id="trackV" class="flex gap-1 h-12 bg-[#0F0F0F] rounded-xl flex-1 p-1 border border-white/5"></div></div>
-<div class="flex items-center gap-2"><span class="text-[10px] w-12">T1</span><div id="trackT" class="flex gap-1 h-8 bg-[#0F0F0F] rounded-xl flex-1 p-1 border border-white/5"></div></div>
-<div class="flex items-center gap-2"><span class="text-[10px] w-12">A1</span><div id="trackA" class="flex gap-1 h-8 bg-[#0F0F0F] rounded-xl flex-1 p-1 border border-white/5"></div></div>
-</div>
-</div>
-</div>
-
-<!-- PROPRIEDADES DIREITA -->
-<div class="w-[280px] bg-[#181818] border-l border-white/10 p-4 overflow-y-auto">
-<p class="font-black text-xs">AJUSTES</p>
-<label class="text-[11px] mt-3 block">Texto (legenda estilo CapCut)</label>
-<input id="txtInput" placeholder="Digite seu texto viral..." class="w-full mt-1 bg-black border border-white/10 rounded-xl px-3 py-3 text-xs" oninput="updateTexto(this.value)">
-<div class="grid grid-cols-3 gap-2 mt-3">
-<button onclick="styleTexto('big')" class="bg-white text-black font-black text-[11px] py-2 rounded-xl">BIG</button>
-<button onclick="styleTexto('stroke')" class="bg-zinc-800 text-white font-black text-[11px] py-2 rounded-xl">BORDA</button>
-<button onclick="styleTexto('neon')" class="bg-[#A855F7] text-white font-black text-[11px] py-2 rounded-xl">NEON</button>
-</div>
-<label class="text-[11px] mt-4 block">Zoom & Posição</label>
-<input type="range" id="zoom" min="50" max="200" value="100" class="w-full accent-white mt-1" oninput="setZoom(this.value)">
-<button onclick="addLegendaAuto()" class="w-full mt-4 bg-[#A855F7] font-black py-3 rounded-full text-xs">✨ Legenda Automática (igual CapCut)</button>
+<!-- direita -->
+<div class="w-[260px] bg-[#181818] border-l border-white/10 p-4">
+<p class="font-black text-xs">TEXTO</p>
+<input id="txt" placeholder="Digite..." class="w-full mt-2 bg-black border border-white/10 rounded-xl px-3 py-3 text-xs" oninput="txt(this.value)">
+<button onclick="legenda()" class="w-full mt-3 bg-white text-black font-black py-3 rounded-full text-xs">Legenda Automática</button>
 </div>
 </div>
 
 <script>
-const canvas=document.getElementById('preview'); const ctx=canvas.getContext('2d'); const video=document.getElementById('v');
-let midias=[]; let textos=[]; let currentTime=0; let duracao=10; let playing=false; let raf=null; let audioEl=null;
+const canvas=document.getElementById('c'), ctx=canvas.getContext('2d'), video=document.getElementById('v');
+let textos=[], playing=false, dur=10, rec=null, chunks=[], audioEl=null;
 
-function loadMidia(e){
+function load(e){
  for(const f of e.target.files){
-  const url=URL.createObjectURL(f); const type=f.type.startsWith('video')?'video':'image';
-  midias.push({url,type,name:f.name}); addToTimeline(f.name,type,url);
+  const url=URL.createObjectURL(f);
+  const type=f.type.startsWith('video')?'video':'image';
+  if(type=='video'){ video.src=url; video.onloadedmetadata=()=>dur=video.duration; }
+  else { const img=new Image(); img.onload=()=>{ctx.clearRect(0,0,720,1280); ctx.drawImage(img,0,0,720,1280); draw()}; img.src=url; }
+  const el=document.createElement('div'); el.className='bg-white text-black text-[10px] font-black px-3 py-2 rounded-lg'; el.textContent=f.name.slice(0,15); document.getElementById('timeline').appendChild(el);
  }
- if(midias[0]){ if(midias[0].type=='video'){video.src=midias[0].url; video.onloadedmetadata=()=>{duracao=video.duration||10}} else {duracao=10; drawImage(midias[0].url)}}
- renderBib();
 }
-function renderBib(){
- document.getElementById('biblioteca').innerHTML=midias.map((m,i)=>`<div onclick="usar(${i})" class="bg-black rounded-xl h-20 overflow-hidden border border-white/10 relative"><img src="${m.url}" class="w-full h-full object-cover"><span class="absolute bottom-0 left-0 bg-black/70 text-[9px] px-1">${m.name.slice(0,12)}</span></div>`).join('');
-}
-function addToTimeline(name,type,url){
- const el=document.createElement('div'); el.className='bg-white text-black text-[10px] font-black px-3 py-2 rounded-lg flex items-center gap-1'; el.innerHTML=(type=='video'?'🎬':'🖼️')+' '+name.slice(0,15); el.draggable=true; document.getElementById('trackV').appendChild(el);
- el.onclick=()=>usar(midias.findIndex(m=>m.url==url));
-}
-function usar(i){ const m=midias[i]; if(m.type=='video'){video.src=m.url; video.play(); playing=true; loop()} else drawImage(m.url); }
-
-function drawImage(url){ const img=new Image(); img.onload=()=>{ctx.clearRect(0,0,720,1280); ctx.drawImage(img,0,0,720,1280); drawTextos();}; img.src=url; }
-
-function addTexto(){ const t=prompt('Texto:','VOCÊ NÃO VAI ACREDITAR!'); if(!t) return; textos.push({txt:t,x:360,y:1050,size:64,color:'#fff',stroke:true}); draw(); }
-function updateTexto(v){ if(textos.length==0) textos.push({txt:v,x:360,y:1050,size:64,color:'#fff',stroke:true}); else textos[0].txt=v; draw(); }
-function styleTexto(s){ if(textos.length==0) return; if(s=='big') textos[0].size=88; if(s=='stroke') textos[0].stroke=!textos[0].stroke; if(s=='neon') textos[0].color='#A3FF12'; draw(); }
-function drawTextos(){ textos.forEach(t=>{ctx.font=`900 ${t.size}px Inter`; ctx.textAlign='center'; ctx.lineWidth=10; ctx.strokeStyle='black'; if(t.stroke) ctx.strokeText(t.txt.toUpperCase(),t.x,t.y); ctx.fillStyle=t.color; ctx.fillText(t.txt.toUpperCase(),t.x,t.y);})}
-function draw(){ ctx.clearRect(0,0,720,1280); if(video.src && video.readyState>=2){ctx.drawImage(video,0,0,720,1280);} drawTextos(); }
-
-function loop(){ if(!playing) return; currentTime=video.currentTime||0; document.getElementById('time').value=(currentTime/duracao*100); document.getElementById('timer').textContent=`${currentTime.toFixed(1)}s / ${duracao.toFixed(1)}s`; draw(); raf=requestAnimationFrame(loop); }
-function playPause(){ if(video.paused){video.play(); playing=true; loop(); document.getElementById('play').textContent='⏸';} else {video.pause(); playing=false; cancelAnimationFrame(raf); document.getElementById('play').textContent='▶';}}
-function seek(v){ currentTime=duracao*v/100; video.currentTime=currentTime; draw(); }
-
-function addSticker(e){ textos.push({txt:e,x:360+Math.random()*200-100,y:600+Math.random()*200-100,size:120,color:'#fff',stroke:false}); draw(); }
-function template(t){
- if(t=='novela'){ textos=[{txt:'🍓 MORANGUINHO DESCOBRIU TUDO!',x:360,y:200,size:48,color:'#fff',stroke:true},{txt:'PARTE 1',x:360,y:1100,size:90,color:'#A3FF12',stroke:true}]; alert('Template Novela aplicado! Agora sobe 2 fotos de frutas.');}
- if(t=='pugilista'){ textos=[{txt:'🥊 PUGILISTA NO ESPAÇO',x:360,y:200,size:48,color:'#fff',stroke:true},{txt:'SOCÃO INTERGALÁCTICO!',x:360,y:1150,size:60,color:'#fff',stroke:true}];}
- if(t=='goku'){ textos=[{txt:'🔥 GOKU ULTRA INSTINTO',x:360,y:200,size:50,color:'#fff',stroke:true}];}
- draw();
-}
-function addLegendaAuto(){ const t=document.getElementById('txtInput').value||'VOCÊ PERDOARIA? COMENTA 👇'; textos.push({txt:t,x:360,y:1050,size:56,color:'white',stroke:true}); draw(); }
-function loadAudio(e){ const url=URL.createObjectURL(e.target.files[0]); audioEl=new Audio(url); audioEl.loop=true; audioEl.play(); const el=document.createElement('div'); el.className='bg-[#A855F7] text-white text-[10px] font-black px-3 py-1 rounded-lg'; el.textContent='🎵 '+e.target.files[0].name.slice(0,15); document.getElementById('trackA').appendChild(el); }
-function setZoom(v){ canvas.style.transform=`scale(${v/100})`; }
-let rec=null, chunks=[]; function exportar(){
- const stream=canvas.captureStream(30); if(audioEl){ const ctxA=new (window.AudioContext||window.webkitAudioContext)(); const dest=ctxA.createMediaStreamDestination(); const src=ctxA.createMediaElementSource(audioEl); src.connect(dest); stream.addTrack(dest.stream.getAudioTracks()[0]);}
- chunks=[]; rec=new MediaRecorder(stream,{mimeType:'video/webm'}); rec.ondataavailable=e=>{if(e.data.size>0)chunks.push(e.data)}; rec.onstop=()=>{const blob=new Blob(chunks,{type:'video/webm'}); const u=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=u; a.download='capcut-clone.webm'; a.click(); alert('Exportado! Igual CapCut, 9:16 pronto pro TikTok');}; rec.start(); video.currentTime=0; video.play(); playing=true; loop(); setTimeout(()=>{rec.stop(); video.pause(); playing=false;}, duracao*1000||10000);
+function addTexto(){ const t=prompt('Texto:'); if(!t) return; textos.push({t,x:360,y:1100,s:60}); draw(); }
+function txt(v){ if(textos.length==0) textos.push({t:v,x:360,y:1100,s:60}); else textos[0].t=v; draw(); }
+function draw(){ ctx.clearRect(0,0,720,1280); if(video.src && video.readyState>=2) ctx.drawImage(video,0,0,720,1280); textos.forEach(o=>{ctx.font=`900 ${o.s}px Inter`; ctx.textAlign='center'; ctx.lineWidth=8; ctx.strokeStyle='black'; ctx.strokeText(o.t.toUpperCase(),o.x,o.y); ctx.fillStyle='white'; ctx.fillText(o.t.toUpperCase(),o.x,o.y);}); }
+function play(){ if(video.paused){video.play(); playing=true; document.getElementById('btn').textContent='⏸'; loop()} else {video.pause(); playing=false; document.getElementById('btn').textContent='▶';}}
+function loop(){ if(!playing) return; document.getElementById('time').value=video.currentTime/dur*100; draw(); requestAnimationFrame(loop); }
+function seek(v){ video.currentTime=dur*v/100; draw(); }
+function legenda(){ const t=document.getElementById('txt').value||'LEGENDA'; textos.push({t,x:360,y:1050,s:56}); draw(); }
+function loadAudio(e){ audioEl=new Audio(URL.createObjectURL(e.target.files[0])); audioEl.play(); }
+function exportar(){
+ const stream=canvas.captureStream(30); chunks=[]; rec=new MediaRecorder(stream,{mimeType:'video/webm'}); rec.ondataavailable=e=>chunks.push(e.data); rec.onstop=()=>{const b=new Blob(chunks,{type:'video/webm'}); const u=URL.createObjectURL(b); const a=document.createElement('a'); a.href=u; a.download='video.webm'; a.click();}; rec.start(); video.currentTime=0; video.play(); setTimeout(()=>{rec.stop(); video.pause();}, dur*1000);
 }
 </script>
 </body>
