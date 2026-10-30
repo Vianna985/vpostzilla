@@ -3,106 +3,67 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VPOSTZILLA - 1 Video Vira 30</title>
+<title>VPOSTZILLA STUDIO</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<style>body{font-family:Inter,sans-serif}.tab-active{background:black;color:white}.tab-inactive{background:#f4f4f5;color:#71717a}</style>
 </head>
-<body class="bg-[#0a0a0a] text-white">
-<header class="fixed top-0 w-full z-50 bg-black/80 border-b border-white/10 backdrop-blur">
-<div class="max-w-7xl mx-auto px-6 py-4 flex items-center gap-2">
-<span>🦖</span><span class="font-black text-xl">VPOSTZILLA</span><span class="bg-[#A3FF12] text-black text-[10px] font-black px-2 py-1 rounded-full ml-2">BETA</span>
-</div>
+<body class="bg-[#0a0a0a] text-white min-h-screen">
+<header class="sticky top-0 z-50 bg-black border-b border-white/10">
+<div class="max-w-7xl mx-auto px-6 py-4 flex gap-2"><span>🦖</span><span class="font-black text-xl">VPOSTZILLA</span><span class="bg-[#A3FF12] text-black text-[10px] font-black px-2 py-1 rounded-full ml-2">STUDIO</span></div>
 </header>
-<section class="pt-24 pb-8 px-6 max-w-7xl mx-auto">
-<h1 class="text-5xl md:text-7xl font-black text-center">1 VIDEO <span class="text-[#A3FF12]">VIRA 30</span> POSTS</h1>
-</section>
-<section class="px-4 pb-16 max-w-6xl mx-auto">
-<div class="bg-white text-black rounded-[2rem] p-5 md:p-8">
-<h2 class="font-black text-xl mb-4">GERADOR VPOSTZILLA</h2>
-<div class="flex flex-col md:flex-row gap-3">
-<input id="videoUrl" type="url" value="https://www.tiktok.com/@gestaroficial/video/7676220112709471509" class="flex-1 bg-zinc-100 border-2 rounded-full px-6 py-4 outline-none text-sm">
-<button onclick="gerarPosts()" class="bg-black text-white font-black px-8 py-4 rounded-full">GERAR 30 POSTS + VIDEO</button>
+<div class="max-w-6xl mx-auto px-4 py-6">
+<div class="flex gap-2 mb-6 bg-zinc-900 p-2 rounded-full w-fit mx-auto">
+<button id="tab1" onclick="mudarAba(1)" class="tab-active px-6 py-3 rounded-full font-black text-sm">📥 1 VÍDEO VIRA 30</button>
+<button id="tab2" onclick="mudarAba(2)" class="tab-inactive px-6 py-3 rounded-full font-black text-sm">🎬 CRIAR VÍDEO DO ZERO</button>
 </div>
-<div id="resultado" class="hidden mt-6 grid lg:grid-cols-[360px_1fr] gap-5">
-<div>
-<div class="bg-black rounded-[1.5rem] p-4">
-<h3 class="text-white font-black text-sm mb-3">🎬 VIDEO ORIGINAL</h3>
-<div id="videoPlayer" class="bg-zinc-900 rounded-xl overflow-hidden aspect-[9/16] min-h-[500px]"></div>
-<div class="mt-4 space-y-2">
-<a id="btnAbrirTikTok" href="#" target="_blank" class="block bg-[#A3FF12] text-black font-black py-4 rounded-full text-center">▶️ RODAR VIDEO NO TIKTOK</a>
-<a id="btnBaixar" href="#" target="_blank" class="block bg-zinc-800 text-white font-bold py-3 rounded-full text-center text-sm">⬇️ BAIXAR SEM MARCA D'ÁGUA</a>
-<button onclick="copiarLink()" class="w-full bg-white text-black border-2 border-black font-bold py-3 rounded-full text-sm">📋 COPIAR LINK</button>
+<div id="aba1" class="bg-white text-black rounded-[2rem] p-6">
+<h2 class="font-black text-xl mb-3">Cole o link e gere 30 posts</h2>
+<div class="flex flex-col md:flex-row gap-2">
+<input id="videoUrl" class="flex-1 bg-zinc-100 border-2 rounded-full px-5 py-3 text-sm" value="https://www.tiktok.com/@gestaroficial/video/7676220112709471509">
+<button onclick="gerarPosts()" class="bg-black text-white font-black px-6 py-3 rounded-full text-sm">GERAR POSTS</button>
+</div>
+<div id="resultado1" class="hidden mt-6 grid lg:grid-cols-[340px_1fr] gap-4">
+<div class="bg-black rounded-2xl p-3"><div id="videoPlayer" class="bg-zinc-900 rounded-xl aspect-[9/16] min-h-[400px] overflow-hidden"></div><a id="btnTikTok" target="_blank" class="block mt-3 bg-[#A3FF12] text-black font-black py-3 rounded-full text-center text-sm">▶️ RODAR VIDEO</a></div>
+<div id="postsGrid1" class="grid gap-2 max-h-[600px] overflow-y-auto"></div>
 </div>
 </div>
+<div id="aba2" class="hidden bg-white text-black rounded-[2rem] p-6">
+<h2 class="font-black text-2xl mb-1">🎬 CRIADOR DE VÍDEO VIRAL</h2>
+<p class="text-sm text-zinc-500 mb-4">Digite o tema e o VPOSTZILLA cria o vídeo automaticamente</p>
+<div class="grid md:grid-cols-2 gap-4 mb-4">
+<div><label class="font-bold text-xs">TEMA DO VÍDEO</label><input id="temaVideo" placeholder="Ex: Os Cavaleiros do Zodiaco" value="Os Cavaleiros do Zodiaco lutando no vulcão, estilo épico anime" class="w-full mt-1 bg-zinc-100 border-2 rounded-xl px-4 py-3 text-sm font-medium"></div>
+<div><label class="font-bold text-xs">ESTILO</label><select id="estiloVideo" class="w-full mt-1 bg-zinc-100 border-2 rounded-xl px-4 py-3 text-sm"><option>Anime Épico 🔥</option><option>Realista Cinematográfico 🎬</option><option>Desenho 3D Pixar 🧸</option><option>Terror / Suspense 😱</option><option>Motivacional / Gestação 🤰</option></select></div>
 </div>
-<div>
-<div id="postsGrid" class="grid gap-3 max-h-[700px] overflow-y-auto"></div>
-<div class="mt-4 flex gap-2">
-<button onclick="copiarTodos()" class="flex-1 bg-zinc-100 border-2 border-black py-3 rounded-full font-bold text-xs">COPIAR TODOS</button>
-<button onclick="baixarTXT()" class="flex-1 bg-black text-white py-3 rounded-full font-black text-xs">BAIXAR .TXT</button>
+<div class="flex gap-2 mb-4">
+<button onclick="criarVideoIA()" class="flex-1 bg-black text-white font-black py-4 rounded-full">🚀 CRIAR VÍDEO AGORA</button>
+<button onclick="criarRoteiro()" class="bg-zinc-100 border-2 border-black font-bold px-6 py-4 rounded-full text-sm">📝 ROTEIRO</button>
+</div>
+<div id="areaCriacao" class="hidden grid lg:grid-cols-[360px_1fr] gap-5 mt-6">
+<div class="bg-black rounded-2xl p-4">
+<h3 class="text-white font-black text-xs mb-3">🎥 PRÉVIA DO VÍDEO</h3>
+<canvas id="videoCanvas" width="360" height="640" class="w-full rounded-xl bg-zinc-900"></canvas>
+<div class="mt-3 flex gap-2">
+<button onclick="baixarVideoCriado()" class="flex-1 bg-[#A3FF12] text-black font-black py-3 rounded-full text-sm">⬇️ BAIXAR VÍDEO MP4</button>
+<button onclick="rodarPreview()" class="bg-zinc-800 text-white font-bold px-4 py-3 rounded-full text-sm">▶️ PLAY</button>
 </div>
 </div>
+<div><div class="bg-zinc-50 border rounded-2xl p-4"><h4 class="font-black text-sm">📜 ROTEIRO VIRAL</h4><div id="roteiroTexto" class="text-sm mt-3 space-y-2"></div></div><div id="postsGrid2" class="mt-4 grid gap-2"></div></div>
+</div>
+<div class="mt-6 bg-zinc-50 border-2 border-dashed rounded-2xl p-4 text-sm"><p class="font-black">💡 COMO FUNCIONA:</p><ol class="list-decimal ml-5 mt-2 space-y-1 text-zinc-600"><li>Digite o tema (ex: Cavaleiros do Zodíaco)</li><li>Ele gera roteiro em 3 cenas + legendas</li><li>Cria vídeo animado com efeitos</li><li>Baixa MP4 pronto pra postar</li></ol></div>
 </div>
 </div>
-</section>
 <script>
-let todosPosts=[];
-function gerarPosts(){
- const url=document.getElementById('videoUrl').value.trim();
- if(!url){alert('Cole o link!');return;}
- document.getElementById('resultado').classList.remove('hidden');
- montarVideo(url);
- criar30Posts();
- document.getElementById('resultado').scrollIntoView({behavior:'smooth'});
-}
-function montarVideo(url){
- const player=document.getElementById('videoPlayer');
- const idMatch=url.match(/video\/(\d+)/);
- const videoId=idMatch?idMatch[1]:'7676220112709471509';
- 
- player.innerHTML=`
-   <div class="w-full h-full flex flex-col">
-     <iframe src="https://www.tiktok.com/embed/v2/${videoId}?lang=pt-BR" 
-       class="w-full flex-1 border-0 bg-black" 
-       style="min-height:450px"
-       allowfullscreen></iframe>
-     <a href="${url}" target="_blank" class="bg-[#A3FF12] text-black font-black p-3 text-center text-sm">
-       ▶️ SE NÃO RODAR AQUI, CLIQUE PARA ABRIR NO APP
-     </a>
-   </div>
- `;
- document.getElementById('btnAbrirTikTok').href=url;
- document.getElementById('btnBaixar').href=`https://ssstik.io/pt?url=${encodeURIComponent(url)}`;
- 
- // Fallback se iframe ficar preto
- setTimeout(()=>{
-   if(player.innerHTML.includes('iframe')){
-     const test=player.querySelector('iframe');
-     // Sempre mostra botão grande por cima
-     let fallback=document.createElement('div');
-     fallback.innerHTML=`<div class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center p-6 text-center" style="position:relative; margin-top:-100px; z-index:10;"><a href="${url}" target="_blank" class="bg-white text-black px-8 py-4 rounded-full font-black text-lg animate-bounce">▶️ CLIQUE AQUI PARA RODAR O VÍDEO</a><p class="text-white text-xs mt-4">O TikTok bloqueia player externo, por isso abre direto no app</p></div>`;
-     // Se quiser, descomente a linha abaixo para mostrar botão sempre
-     // player.appendChild(fallback);
-   }
- },1500);
-}
-function criar30Posts(){
- todosPosts=[];const grid=document.getElementById('postsGrid');grid.innerHTML='';
- const templates=["NINGUEM te contou isso sobre GESTACAO mas...","POV: Voce descobre esse truque","3 ERROS que voce comete ❌","O segredo que escondem de voce","PARE de fazer isso AGORA!","Como eu consegui em 7 dias","Isso mudou minha gestacao","Se eu fosse voce, faria isso","Voce esta fazendo ERRADO","A verdade sobre gestacao"];
- const legendas=["Salva que voce vai precisar 👇","Comenta EU QUERO que te mando","Ja sabia? Comenta","Compartilha com uma gestante"];
- for(let n=1;n<=30;n++){
-  const gancho=templates[n%templates.length]+` [POST ${n}]`;
-  const legenda=legendas[n%legendas.length];
-  const hashtags="#gestacao #gestante #dica #viral #vpostzilla";
-  const post={id:n,gancho,legenda,hashtags};todosPosts.push(post);
-  const div=document.createElement('div');div.className='bg-zinc-50 border rounded-xl p-3 text-sm';
-  div.innerHTML=`<div class="flex justify-between mb-1"><b class="text-xs bg-black text-white px-2 py-1 rounded-full">POST ${n}</b><button onclick="copiar(${n})" class="text-xs border px-2 rounded-full">Copiar</button></div><p class="font-bold">${gancho}</p><p class="text-zinc-600 text-xs mt-1">${legenda}</p><p class="text-green-700 text-[11px] mt-1">${hashtags}</p>`;
-  grid.appendChild(div);
- }
-}
-function copiar(n){const p=todosPosts.find(x=>x.id===n);navigator.clipboard.writeText(`${p.gancho}\n\n${p.legenda}\n\n${p.hashtags}`);alert('Copiado POST '+n);}
-function copiarTodos(){const txt=todosPosts.map(p=>`POST ${p.id}:\n${p.gancho}\n${p.legenda}\n${p.hashtags}`).join('\n\n---\n\n');navigator.clipboard.writeText(txt);alert('30 posts copiados!');}
-function baixarTXT(){const txt=todosPosts.map(p=>`POST ${p.id}:\n${p.gancho}\n${p.legenda}\n${p.hashtags}`).join('\n\n---\n\n');const blob=new Blob([txt],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='vpostzilla.txt';a.click();}
-function copiarLink(){navigator.clipboard.writeText(document.getElementById('videoUrl').value);alert('Link copiado!');}
+let todosPosts=[]; let videoBlob=null; let canvasAnim=null;
+function mudarAba(n){document.getElementById('aba1').classList.toggle('hidden',n!==1);document.getElementById('aba2').classList.toggle('hidden',n!==2);document.getElementById('tab1').className=n===1?'tab-active px-6 py-3 rounded-full font-black text-sm':'tab-inactive px-6 py-3 rounded-full font-black text-sm';document.getElementById('tab2').className=n===2?'tab-active px-6 py-3 rounded-full font-black text-sm':'tab-inactive px-6 py-3 rounded-full font-black text-sm';}
+function gerarPosts(){const url=document.getElementById('videoUrl').value;document.getElementById('resultado1').classList.remove('hidden');const id=url.match(/video\/(\d+)/);const vid=id?id[1]:'7676220112709471509';document.getElementById('videoPlayer').innerHTML=`<iframe src="https://www.tiktok.com/embed/v2/${vid}" class="w-full h-full min-h-[400px] border-0" allowfullscreen></iframe>`;document.getElementById('btnTikTok').href=url;criarListaPosts('postsGrid1','Gestação');}
+function criarListaPosts(gridId,tema){const grid=document.getElementById(gridId);grid.innerHTML='';const g=[`NINGUÉM te contou sobre ${tema}`,`POV: Você descobre isso`,`3 ERROS em ${tema}`,`O segredo de ${tema}`,`PARE de fazer isso!`];for(let i=1;i<=12;i++){const d=document.createElement('div');d.className='bg-zinc-50 border rounded-xl p-3 text-sm';d.innerHTML=`<b class="text-xs bg-black text-white px-2 py-1 rounded-full">POST ${i}</b><p class="font-bold mt-1">${g[i%g.length]} #${i}</p>`;grid.appendChild(d);}}
+function criarRoteiro(){const tema=document.getElementById('temaVideo').value;const estilo=document.getElementById('estiloVideo').value;document.getElementById('roteiroTexto').innerHTML=`<p><b>CENA 1 (0-3s) GANCHO:</b><br>"VOCÊ NÃO VAI ACREDITAR..."<br>Fundo: Vulcão + ${tema}</p><p><b>CENA 2 (3-7s) CLIMAX:</b><br>"OS CAVALEIROS CHEGARAM"<br>Efeito: Zoom + tremor</p><p><b>CENA 3 (7-10s) CTA:</b><br>"COMENTA EU QUERO PARTE 2"<br>Estilo: ${estilo}</p><p class="bg-[#A3FF12] p-2 rounded font-bold">Legenda: "${tema} - vai te deixar sem palavras 😱 Comenta EU QUERO 👇"</p>`;}
+function criarVideoIA(){criarRoteiro();document.getElementById('areaCriacao').classList.remove('hidden');criarListaPosts('postsGrid2',document.getElementById('temaVideo').value.split(' ')[0]);desenharVideo(document.getElementById('temaVideo').value);document.getElementById('areaCriacao').scrollIntoView({behavior:'smooth'});}
+function desenharVideo(tema){const canvas=document.getElementById('videoCanvas');const ctx=canvas.getContext('2d');let frame=0;const total=180;if(canvasAnim) cancelAnimationFrame(canvasAnim);function draw(){ctx.clearRect(0,0,360,640);const grad=ctx.createLinearGradient(0,0,0,640);grad.addColorStop(0,'#1a1a1a');grad.addColorStop(0.5,'#ff5500');grad.addColorStop(1,'#000');ctx.fillStyle=grad;ctx.fillRect(0,0,360,640);const s=1+Math.sin(frame*0.05)*0.05;ctx.save();ctx.translate(180,200);ctx.scale(s,s);ctx.fillStyle='white';ctx.font='900 24px Inter';ctx.textAlign='center';ctx.fillText('OS CAVALEIROS',0,0);ctx.fillStyle='#A3FF12';ctx.font='900 32px Inter';ctx.fillText('★ CHEGARAM ★',0,40);ctx.restore();ctx.fillStyle='white';ctx.font='600 14px Inter';ctx.textAlign='center';ctx.fillText(tema.substring(0,38),180,320);ctx.fillStyle=`rgba(255,${100+frame%100},0,0.3)`;ctx.beginPath();ctx.arc(180,500+Math.sin(frame*0.1)*10,80+frame%20,0,Math.PI*2);ctx.fill();ctx.fillStyle='#A3FF12';ctx.fillRect(0,620,(frame/total)*360,8);frame=(frame+1)%total;canvasAnim=requestAnimationFrame(draw);}draw();gravarCanvas();}
+let mediaRecorder;let recordedChunks=[];
+function gravarCanvas(){const canvas=document.getElementById('videoCanvas');const stream=canvas.captureStream(30);recordedChunks=[];mediaRecorder=new MediaRecorder(stream,{mimeType:'video/webm'});mediaRecorder.ondataavailable=e=>{if(e.data.size>0) recordedChunks.push(e.data)};mediaRecorder.onstop=()=>{videoBlob=new Blob(recordedChunks,{type:'video/webm'});};mediaRecorder.start();setTimeout(()=>{if(mediaRecorder.state==='recording') mediaRecorder.stop();},6000);}
+function baixarVideoCriado(){if(!videoBlob){alert('Gravando... aguarde 2s');setTimeout(baixarVideoCriado,1500);return;}const url=URL.createObjectURL(videoBlob);const a=document.createElement('a');a.href=url;a.download='vpostzilla-video-viral.webm';a.click();}
+function rodarPreview(){criarVideoIA();}
 </script>
 </body>
 </html>
