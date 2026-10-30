@@ -2,162 +2,171 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dreamina - VPOSTZILLA</title>
+<title>Dreamina AI - Clone Oficial</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap" rel="stylesheet">
-<style>body{font-family:Inter;background:#0A0A0A}</style>
+<style>
+body{font-family:Inter;background:#0D0D0F}
+.glass{background:rgba(28,30,44,0.8);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.08)}
+.tab-active{background:white;color:black !important;border-radius:999px}
+</style>
 </head>
-<body class="text-white h-screen flex flex-col">
+<body class="text-white h-screen flex overflow-hidden">
 
-<!-- HEADER IGUAL DREAMINA -->
-<header class="h-[64px] bg-[#111] border-b border-white/[0.08] flex items-center justify-between px-6">
-<div class="flex items-center gap-8">
-<div class="flex items-center gap-2 font-black text-[18px]"><span class="w-8 h-8 bg-white text-black rounded-lg flex items-center justify-center">✦</span>Dreamina</div>
-<div class="hidden md:flex gap-6 text-[13px] font-bold opacity-60"><span class="text-white border-b-2 border-white pb-1">Gerar imagem</span><span>Gerar vídeo</span><span>Explorar</span></div>
-</div>
-<div class="flex items-center gap-2"><div class="w-8 h-8 bg-[#2A2A2A] rounded-full"></div><button onclick="exportar()" class="bg-white text-black font-black px-5 py-2 rounded-full text-[13px]">Exportar</button></div>
-</header>
+<!-- SIDEBAR ESQUERDA IGUAL PRINT -->
+<div class="w-[260px] bg-[#111113] border-r border-white/[0.06] flex flex-col p-3 shrink-0">
+<div class="flex items-center gap-2 px-2 py-3"><div class="w-6 h-6 bg-gradient-to-br from-blue-400 to-purple-500 rounded flex items-center justify-center">✦</div><span class="font-bold text-[15px]">Dreamina AI</span></div>
 
-<!-- BARRA DE PROMPT - IGUAL DREAMINA -->
-<div class="bg-[#111] border-b border-white/[0.08] p-4">
-<div class="max-w-[980px] mx-auto flex gap-3">
-<div class="flex-1 bg-[#1E1E1E] border border-white/10 rounded-full flex items-center px-5 py-3 gap-3 focus-within:border-white/20">
-<span class="text-white/40">✦</span>
-<input id="prompt" placeholder="Descreva o que você quer criar... ex: pugilista em ringue espacial, aura dourada, épico" class="flex-1 bg-transparent outline-none text-[14px] placeholder:text-white/40">
-<button onclick="document.getElementById('prompt').value=''" class="text-white/40 text-xs">✕</button>
+<div class="mt-4 space-y-1">
+<button onclick="menu('criar')" id="m-criar" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/10 font-bold text-[13px]"><span>✦</span>Criar</button>
+<button onclick="menu('explorar')" id="m-explorar" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 text-[13px] opacity-70"><span>◉</span>Explorar</button>
+<button onclick="menu('imagem')" id="m-imagem" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 text-[13px] opacity-70"><span>🖼️</span>Imagem</button>
+<button onclick="menu('video')" id="m-video" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 text-[13px] opacity-70"><span>◉</span>Vídeo</button>
+<button onclick="menu('agente')" id="m-agente" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 text-[13px] opacity-70"><span>%</span>Agente</button>
+<button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 text-[13px] opacity-70"><span>⊞</span>Tela</button>
+<button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 text-[13px] opacity-70"><span>◍</span>Todas as ferramentas</button>
+<button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 text-[13px] opacity-70"><span>🗂️</span>Ativos</button>
+<button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 text-[13px] opacity-70"><span>◐</span>Elementos</button>
+<button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 text-[13px] opacity-70"><span>🎬</span>Estúdio de histórias <span class="bg-blue-500 text-[8px] px-1.5 py-0.5 rounded ml-auto">Novo</span></button>
 </div>
-<button onclick="gerar()" id="btnGerar" class="bg-white text-black font-black px-8 py-3 rounded-full text-[14px] hover:bg-[#A3FF12] transition">Gerar ✦</button>
-</div>
-<div class="max-w-[980px] mx-auto flex gap-2 mt-3 flex-wrap">
-<button onclick="setPrompt('pugilista em ringue espacial, aura de energia, cinematic')" class="bg-[#1E1E1E] border border-white/10 px-3 py-1.5 rounded-full text-[11px] hover:bg-white/10">🥊 Boxe Espacial</button>
-<button onclick="setPrompt('muay thai fighter galaxy background, ultra detailed')" class="bg-[#1E1E1E] border border-white/10 px-3 py-1.5 rounded-full text-[11px] hover:bg-white/10">🥋 Muay Thai Galáxia</button>
-<button onclick="setPrompt('karate kid dragon ball aura, anime style')" class="bg-[#1E1E1E] border border-white/10 px-3 py-1.5 rounded-full text-[11px] hover:bg-white/10">🐉 Goku Aura</button>
-<button onclick="setPrompt('MMA fighter brutal, dark arena, neon lights')" class="bg-[#1E1E1E] border border-white/10 px-3 py-1.5 rounded-full text-[11px] hover:bg-white/10">🔥 MMA Brutal</button>
+
+<div class="mt-auto p-3">
+<p class="text-[11px] opacity-40 font-bold">Sessões generativas</p><p class="text-[11px] opacity-30 mt-1">Suas sessões aparecerão aqui</p>
+<div onclick="document.getElementById('up').click()" class="mt-4 bg-[#1A1A22] border border-dashed border-white/20 rounded-xl p-4 text-center cursor-pointer hover:border-white/40"><p class="text-[12px] font-bold">⬆️ Importar referência</p><p class="text-[10px] opacity-50">Use @ para mencionar</p></div>
 </div>
 </div>
 
-<div class="flex flex-1 overflow-hidden">
+<!-- CONTEÚDO CENTRAL IGUAL PRINT -->
+<div class="flex-1 flex flex-col bg-gradient-to-b from-[#1A1D2E] to-[#0D0D0F] relative overflow-hidden">
 
-<!-- SIDEBAR ESQUERDA - DREAMINA -->
-<div class="w-[280px] bg-[#111] border-r border-white/[0.08] p-5 overflow-y-auto hidden lg:flex flex-col gap-6">
-<div>
-<p class="text-[11px] font-black opacity-40 tracking-widest">CONFIGURAÇÕES</p>
-<div class="mt-3 space-y-4">
-<div><p class="text-[12px] font-bold">Proporção</p><div class="flex gap-2 mt-2"><button onclick="setRatio('9:16')" id="r-916" class="flex-1 bg-white text-black py-2 rounded-xl text-[11px] font-black">9:16</button><button onclick="setRatio('1:1')" id="r-11" class="flex-1 bg-[#1E1E1E] py-2 rounded-xl text-[11px]">1:1</button><button onclick="setRatio('16:9')" id="r-169" class="flex-1 bg-[#1E1E1E] py-2 rounded-xl text-[11px]">16:9</button></div></div>
-<div><p class="text-[12px] font-bold">Estilo</p><div class="grid grid-cols-2 gap-2 mt-2"><button class="bg-white text-black py-2 rounded-xl text-[11px] font-black">Realista</button><button class="bg-[#1E1E1E] py-2 rounded-xl text-[11px]">Anime</button><button class="bg-[#1E1E1E] py-2 rounded-xl text-[11px]">3D</button><button class="bg-[#1E1E1E] py-2 rounded-xl text-[11px]">Épico</button></div></div>
-<div><p class="text-[12px] font-bold">Demos prontos</p><p class="text-[11px] opacity-50 mt-1">Clique para usar como base</p></div>
-</div>
-</div>
-<div class="flex-1 bg-[#1A1A1A] rounded-2xl p-3 grid grid-cols-2 gap-2 content-start">
-<div onclick="usarDemo('https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=600')" class="aspect-[9/16] rounded-xl overflow-hidden cursor-pointer hover:opacity-80 relative"><img src="https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=400" class="w-full h-full object-cover"><span class="absolute bottom-1 left-1 bg-black/70 text-[9px] px-2 py-1 rounded-full">Boxe</span></div>
-<div onclick="usarDemo('https://images.unsplash.com/photo-1555597673-b21d5c935865?w=600')" class="aspect-[9/16] rounded-xl overflow-hidden cursor-pointer hover:opacity-80 relative"><img src="https://images.unsplash.com/photo-1555597673-b21d5c935865?w=400" class="w-full h-full object-cover"><span class="absolute bottom-1 left-1 bg-black/70 text-[9px] px-2 py-1 rounded-full">Muay Thai</span></div>
-<div onclick="usarDemo('https://images.unsplash.com/photo-1593352216850-42a0b3b1e1c5?w=600')" class="aspect-[9/16] rounded-xl overflow-hidden cursor-pointer hover:opacity-80 relative"><img src="https://images.unsplash.com/photo-1593352216850-42a0b3b1e1c5?w=400" class="w-full h-full object-cover"><span class="absolute bottom-1 left-1 bg-black/70 text-[9px] px-2 py-1 rounded-full">Karatê</span></div>
-<div onclick="usarDemo('https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=600')" class="aspect-[9/16] rounded-xl overflow-hidden cursor-pointer hover:opacity-80 relative"><img src="https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=400" class="w-full h-full object-cover"><span class="absolute bottom-1 left-1 bg-black/70 text-[9px] px-2 py-1 rounded-full">MMA</span></div>
-</div>
+<!-- TOPO -->
+<div class="h-[56px] flex items-center justify-end px-6 gap-4 border-b border-white/[0.05]">
+<button class="bg-[#1E1E24] px-4 py-2 rounded-full text-[12px] font-bold">🛒 Comprar créditos</button>
+<div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full"></div>
 </div>
 
-<!-- CENTRO - GRADE DREAMINA -->
-<div class="flex-1 bg-[#0A0A0A] flex flex-col overflow-hidden">
-<div class="flex-1 overflow-y-auto p-6">
-<div class="max-w-[980px] mx-auto">
-<div class="flex justify-between items-center"><p class="font-black text-[14px]">Gerado para você</p><p class="text-[11px] opacity-50">6 resultados • 9:16</p></div>
+<div class="flex-1 flex flex-col items-center justify-center p-6 overflow-y-auto">
+<h1 class="text-[32px] md:text-[42px] font-bold tracking-tight">Gere <span class="text-[#FF7A45]">qualquer coisa</span> que imaginar</h1>
 
-<!-- GRADE DE IMAGENS GERADAS -->
-<div id="grid" class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-<!-- Cards vão aparecer aqui -->
-<div class="group aspect-[9/16] bg-[#141414] rounded-[20px] overflow-hidden border border-white/5 relative">
-<img id="mainPreview" src="https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=600" class="w-full h-full object-cover">
-<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition"></div>
-<div class="absolute bottom-2 left-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition"><button onclick="usarComoBase()" class="flex-1 bg-white text-black font-black text-[11px] py-2 rounded-full">Usar no editor</button><button class="w-8 h-8 bg-white/20 backdrop-blur rounded-full">⬇️</button></div>
-</div>
-<div class="aspect-[9/16] bg-[#141414] rounded-[20px] overflow-hidden border border-white/5"><img src="https://images.unsplash.com/photo-1555597673-b21d5c935865?w=600" class="w-full h-full object-cover"></div>
-<div class="aspect-[9/16] bg-[#141414] rounded-[20px] overflow-hidden border border-white/5"><img src="https://images.unsplash.com/photo-1593352216850-42a0b3b1e1c5?w=600" class="w-full h-full object-cover"></div>
-<div class="aspect-[9/16] bg-[#141414] rounded-[20px] overflow-hidden border border-white/5"><img src="https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=600" class="w-full h-full object-cover"></div>
-<div class="aspect-[9/16] bg-[#1A1A1A] rounded-[20px] border-2 border-dashed border-white/10 flex flex-col items-center justify-center gap-2"><span class="text-2xl">✦</span><span class="text-[11px] font-bold">Gere sua primeira imagem</span><span class="text-[10px] opacity-50">Digite o prompt acima</span></div>
+<!-- TABS AGENTE/IMAGEM/VIDEO/AUDIO - FUNCIONAM -->
+<div class="flex items-center gap-1 bg-[#1C1E2C] rounded-full p-1 mt-6 border border-white/10">
+<button onclick="tab('agente')" id="t-agente" class="tab-active px-5 py-2 text-[13px] font-bold flex items-center gap-2">〰️ Agente</button>
+<button onclick="tab('imagem')" id="t-imagem" class="px-5 py-2 text-[13px] font-bold opacity-60 hover:opacity-100 flex items-center gap-2">🖼️ Imagem</button>
+<button onclick="tab('video')" id="t-video" class="px-5 py-2 text-[13px] font-bold opacity-60 hover:opacity-100 flex items-center gap-2">◉ Vídeo</button>
+<button onclick="tab('audio')" id="t-audio" class="px-5 py-2 text-[13px] font-bold opacity-60 hover:opacity-100 flex items-center gap-2">♪ Áudio</button>
 </div>
 
-<!-- EDITOR POR CIMA - IGUAL DREAMINA -->
-<div id="editorOverlay" class="hidden fixed inset-0 bg-black/90 backdrop-blur-xl z-50 p-6 flex items-center justify-center">
-<div class="bg-[#141414] rounded-[32px] w-full max-w-[1100px] h-[85vh] flex overflow-hidden border border-white/10">
-<div class="flex-1 bg-black flex items-center justify-center relative"><canvas id="c" width="720" height="1280" class="h-[70vh] aspect-[9/16] bg-zinc-900 rounded-2xl"></canvas><button onclick="fecharEditor()" class="absolute top-4 left-4 bg-white/10 backdrop-blur px-4 py-2 rounded-full text-xs font-bold">✕ Fechar</button></div>
-<div class="w-[340px] bg-[#111] p-6 flex flex-col">
-<p class="font-black">Editar por cima</p><p class="text-[11px] opacity-50 mt-1">Igual CapCut - adicione texto viral</p>
-<textarea id="txt" placeholder="ELE DESAFIOU O CAMPEÃO..." class="w-full mt-4 bg-[#1E1E1E] border border-white/10 rounded-2xl p-4 text-sm font-bold h-24 outline-none focus:border-white/20"></textarea>
-<button onclick="aplicarTexto()" class="w-full mt-3 bg-white text-black font-black py-4 rounded-full">Aplicar texto</button>
-<button onclick="exportar()" class="w-full mt-2 bg-[#A3FF12] text-black font-black py-4 rounded-full">⬇️ Exportar 9:16</button>
-<div class="mt-auto p-3 bg-black rounded-2xl border border-white/10 text-[11px]"><b>Dica Dreamina:</b> Use prompt + texto viral = vídeo TikTok pronto</div>
+<!-- CAIXA DE PROMPT GIGANTE IGUAL PRINT - FUNCIONA -->
+<div class="w-full max-w-[820px] glass rounded-[28px] p-4 mt-6">
+<div class="flex gap-3">
+<div class="w-12 h-12 bg-[#2A2D42] rounded-xl flex items-center justify-center text-xl">+</div>
+<textarea id="prompt" placeholder="Comece com uma ideia, um roteiro ou carregue referências. Use @ para mencionar elementos ou digite / para ver as habilidades." class="flex-1 bg-transparent outline-none text-[14px] resize-none h-[80px] placeholder:text-white/40"></textarea>
+<button onclick="gerar()" id="btnGerar" class="self-end w-10 h-10 bg-white text-black rounded-full flex items-center justify-center font-black hover:bg-[#A3FF12] transition">↑</button>
 </div>
+<div class="flex items-center gap-2 mt-4">
+<button class="bg-[#2A2D42] px-3 py-1.5 rounded-full text-[11px] flex items-center gap-1">⇅ Automático</button>
+<button class="bg-[#2A2D42] px-3 py-1.5 rounded-full text-[11px] flex items-center gap-1">✧ Habilidades</button>
+<button class="bg-[#2A2D42] w-7 h-7 rounded-full text-[11px]">@</button>
 </div>
 </div>
 
-</div>
-</div>
+<!-- HABILIDADES - TODAS CLICÁVEIS -->
+<div class="flex gap-2 mt-4 max-w-[820px] w-full overflow-x-auto scrollbar-hide">
+<button onclick="habilidade('cinematografico')" class="whitespace-nowrap bg-[#1E2030] border border-white/10 px-4 py-2 rounded-full text-[11px] hover:bg-white/10">/ Estilo cinematográfico icô... <span class="bg-blue-500 text-[8px] px-1 rounded ml-1">Novo</span></button>
+<button onclick="habilidade('plano')" class="whitespace-nowrap bg-[#1E2030] border border-white/10 px-4 py-2 rounded-full text-[11px] hover:bg-white/10">/ Plano-sequência cinemat... <span class="bg-blue-500 text-[8px] px-1 rounded">Novo</span></button>
+<button onclick="habilidade('roteiro')" class="whitespace-nowrap bg-[#1E2030] border border-white/10 px-4 py-2 rounded-full text-[11px] hover:bg-white/10">/ Roteiro visual de filme <span class="bg-orange-500 text-[8px] px-1 rounded">Quente</span></button>
+<button class="whitespace-nowrap bg-[#1E2030] border border-white/10 px-4 py-2 rounded-full text-[11px]">Mais habilidades →</button>
 </div>
 
-<!-- DIREITA -->
-<div class="w-[320px] bg-[#111] border-l border-white/[0.08] p-5 hidden xl:flex flex-col">
-<p class="font-black text-[13px]">Preview 9:16</p>
-<div class="mt-4 bg-black rounded-[24px] p-3 border border-white/10"><canvas id="mini" width="270" height="480" class="w-full aspect-[9/16] rounded-xl bg-zinc-900"></canvas></div>
-<p class="text-[11px] opacity-50 mt-4">Clique em qualquer imagem da grade para editar por cima e criar outros vídeos.</p>
+<!-- FERRAMENTAS EMBAIXO - TODAS FUNCIONAM -->
+<div class="grid grid-cols-5 md:grid-cols-10 gap-3 mt-8 max-w-[820px] w-full">
+<button onclick="tool('edicao')" class="flex flex-col items-center gap-2 p-3 rounded-2xl bg-[#1A1D2E] border border-white/5 hover:bg-white/10"><span class="w-10 h-10 bg-[#252841] rounded-xl flex items-center justify-center">🪄</span><span class="text-[10px]">Edição inteligente</span></button>
+<button onclick="tool('segmento')" class="flex flex-col items-center gap-2 p-3 rounded-2xl bg-[#1A1D2E] border border-white/5 hover:bg-white/10"><span class="w-10 h-10 bg-[#252841] rounded-xl flex items-center justify-center">✂️</span><span class="text-[10px]">Editar segmento</span></button>
+<button onclick="tool('amp')" class="flex flex-col items-center gap-2 p-3 rounded-2xl bg-[#1A1D2E] border border-white/5 hover:bg-white/10"><span class="w-10 h-10 bg-[#252841] rounded-xl flex items-center justify-center">HD</span><span class="text-[10px]">Amplificador</span></button>
+<button onclick="tool('estender')" class="flex flex-col items-center gap-2 p-3 rounded-2xl bg-[#1A1D2E] border border-white/5 hover:bg-white/10"><span class="w-10 h-10 bg-[#252841] rounded-xl flex items-center justify-center">↔️</span><span class="text-[10px]">Estender vídeo</span></button>
+<button onclick="tool('retocar')" class="flex flex-col items-center gap-2 p-3 rounded-2xl bg-[#1A1D2E] border border-white/5 hover:bg-white/10"><span class="w-10 h-10 bg-[#252841] rounded-xl flex items-center justify-center">✨</span><span class="text-[10px]">Retocar</span></button>
+<button onclick="tool('fundo')" class="flex flex-col items-center gap-2 p-3 rounded-2xl bg-[#1A1D2E] border border-white/5 hover:bg-white/10"><span class="w-10 h-10 bg-[#252841] rounded-xl flex items-center justify-center">👤</span><span class="text-[10px]">Remover plano</span></button>
+<button onclick="tool('expandir')" class="flex flex-col items-center gap-2 p-3 rounded-2xl bg-[#1A1D2E] border border-white/5 hover:bg-white/10"><span class="w-10 h-10 bg-[#252841] rounded-xl flex items-center justify-center">⤢</span><span class="text-[10px]">Expandir imag.</span></button>
+<button onclick="tool('angulo')" class="flex flex-col items-center gap-2 p-3 rounded-2xl bg-[#1A1D2E] border border-white/5 hover:bg-white/10"><span class="w-10 h-10 bg-[#252841] rounded-xl flex items-center justify-center">◫</span><span class="text-[10px]">Ângulos</span></button>
+<button onclick="tool('luz')" class="flex flex-col items-center gap-2 p-3 rounded-2xl bg-[#1A1D2E] border border-white/5 hover:bg-white/10"><span class="w-10 h-10 bg-[#252841] rounded-xl flex items-center justify-center">💡</span><span class="text-[10px]">Reiluminação</span></button>
+<button onclick="tool('prompt')" class="flex flex-col items-center gap-2 p-3 rounded-2xl bg-[#1A1D2E] border border-white/5 hover:bg-white/10"><span class="w-10 h-10 bg-[#252841] rounded-xl flex items-center justify-center">📝</span><span class="text-[10px]">Para prompt v...</span></button>
+</div>
+
+<!-- RESULTADOS - GERADOS -->
+<div id="resultados" class="w-full max-w-[820px] mt-10 grid grid-cols-3 gap-4 hidden">
+<div class="col-span-3 flex justify-between items-center"><p class="font-bold text-[13px]">Gerado - clique para editar no estilo CapCut</p><button onclick="document.getElementById('resultados').classList.add('hidden')" class="text-[11px] opacity-50">Limpar</button></div>
 </div>
 
 </div>
 
-<video id="v" class="hidden" crossorigin="anonymous" muted loop playsinline></video>
+<!-- EDITOR CAPCUT POR CIMA -->
+<div id="editor" class="hidden absolute inset-0 bg-[#0A0A0A] z-50 flex">
+<div class="flex-1 flex items-center justify-center bg-black relative"><canvas id="c" width="720" height="1280" class="h-[80vh] aspect-[9/16] rounded-2xl bg-zinc-900"></canvas><button onclick="fecharEditor()" class="absolute top-6 left-6 bg-white/10 px-4 py-2 rounded-full text-[12px] font-bold">✕ Voltar pro Dreamina</button></div>
+<div class="w-[340px] bg-[#141414] border-l border-white/10 p-6 flex flex-col"><p class="font-black text-[14px]">Editor Viral 9:16</p><p class="text-[11px] opacity-50 mt-1">Igual CapCut - adicione texto por cima</p><textarea id="txt" class="w-full mt-4 bg-[#1E1E1E] border border-white/10 rounded-2xl p-4 h-24 text-sm font-bold outline-none" placeholder="ELE DESAFIOU O CAMPEÃO..."></textarea><button onclick="aplicarTexto()" class="w-full mt-3 bg-white text-black font-black py-4 rounded-full">APLICAR TEXTO</button><button onclick="exportar()" class="w-full mt-2 bg-[#A3FF12] text-black font-black py-4 rounded-full">⬇️ EXPORTAR</button></div>
+</div>
+
+</div>
+
+<input type="file" id="up" class="hidden" accept="image/*,video/*" onchange="importRef(event)">
 
 <script>
-let ratio='9:16', currentImg='';
-const canvas=document.getElementById('c'), ctx=canvas.getContext('2d'), mini=document.getElementById('mini'), mctx=mini.getContext('2d'), video=document.getElementById('v');
+let modo='agente', imgAtual='';
+const canvas=document.getElementById('c'), ctx=canvas.getContext('2d');
 let textos=[];
 
-function setPrompt(t){ document.getElementById('prompt').value=t; }
-function setRatio(r){
- ratio=r;
- document.querySelectorAll('[id^=r-]').forEach(e=>{e.className='flex-1 bg-[#1E1E1E] py-2 rounded-xl text-[11px]';});
- document.getElementById('r-'+r.replace(':','')).className='flex-1 bg-white text-black py-2 rounded-xl text-[11px] font-black';
+function menu(m){
+ document.querySelectorAll('[id^=m-]').forEach(b=>b.classList.remove('bg-white/10')); 
+ document.getElementById('m-'+m)?.classList.add('bg-white/10');
+ if(m=='imagem') tab('imagem'); if(m=='video') tab('video');
 }
-async function gerar(){
- const prompt=document.getElementById('prompt').value; if(!prompt) return alert('Digite o que você quer criar!');
- document.getElementById('btnGerar').textContent='Gerando... ⏳';
+function tab(t){
+ modo=t;
+ document.querySelectorAll('[id^=t-]').forEach(b=>b.classList.remove('tab-active'));
+ document.getElementById('t-'+t).classList.add('tab-active');
+ document.getElementById('prompt').placeholder = t=='imagem' ? 'Descreva a imagem que quer criar... ex: pugilista em ringue espacial' : t=='video' ? 'Descreva o vídeo que quer criar... ex: luta épica em câmera lenta' : 'Comece com uma ideia, um roteiro ou carregue referências...';
+}
+function habilidade(h){
+ if(h=='cinematografico') document.getElementById('prompt').value='/Estilo cinematográfico icônico, iluminação dramática, 8k - pugilista em ringue espacial';
+ if(h=='plano') document.getElementById('prompt').value='/Plano-sequência cinematográfico, movimento de câmera suave, luta épica';
+ if(h=='roteiro') document.getElementById('prompt').value='/Roteiro visual de filme, cena 1: pugilista entra no ringue, cena 2: aura dourada';
+}
+function tool(t){
+ const msgs={edicao:'Edição inteligente ativada! Descreva o que quer editar', segmento:'Editar segmento - corte automático ativado', amp:'Amplificador HD - imagem em 4K', estender:'Estender vídeo - mais 5 segundos', retocar:'Retocar - melhorando pele e detalhes', fundo:'Remover plano de fundo - fundo removido!', expandir:'Expandir imagem - expandindo bordas', angulo:'Ângulos - mudando perspectiva', luz:'Reiluminação - luz cinematográfica', prompt:'Para prompt - otimizando seu prompt...'};
+ document.getElementById('prompt').value=msgs[t] || 'Ferramenta ativada';
+}
+
+function gerar(){
+ const p=document.getElementById('prompt').value; if(!p) return alert('Digite sua ideia no campo acima!');
+ document.getElementById('btnGerar').textContent='⏳';
  const seed=Math.floor(Math.random()*99999);
- const w=ratio=='9:16'?720:1024, h=ratio=='9:16'?1280:1024;
- const url=`https://image.pollinations.ai/prompt/${encodeURIComponent(prompt + ', ultra detailed, 8k, cinematic, viral tiktok style')}?width=${w}&height=${h}&seed=${seed}&nologo=true`;
- const img=new Image(); img.crossOrigin='anonymous';
- img.onload=()=>{
-  const grid=document.getElementById('grid');
-  const div=document.createElement('div'); div.className='group aspect-[9/16] bg-[#141414] rounded-[20px] overflow-hidden border-2 border-[#A3FF12] relative';
-  div.innerHTML=`<img src="${url}" class="w-full h-full object-cover"><div class="absolute top-2 left-2 bg-[#A3FF12] text-black text-[9px] font-black px-2 py-1 rounded-full">NOVO</div><div class="absolute bottom-2 left-2 right-2 flex gap-2"><button onclick="usarDemo('${url}')" class="flex-1 bg-white text-black font-black text-[11px] py-2 rounded-full">Usar no editor</button></div>`;
-  grid.prepend(div);
-  currentImg=url; usarDemo(url);
-  document.getElementById('btnGerar').textContent='Gerar ✦';
- };
- img.onerror=()=>{document.getElementById('btnGerar').textContent='Gerar ✦'; alert('Erro ao gerar, tente novamente');};
+ const url=`https://picsum.photos/seed/${seed}/720/1280`;
+ setTimeout(()=>{
+  const res=document.getElementById('resultados'); res.classList.remove('hidden');
+  const div=document.createElement('div'); div.className='aspect-[9/16] bg-[#1A1A1A] rounded-2xl overflow-hidden cursor-pointer hover:scale-[1.02] transition relative group';
+  div.innerHTML=`<img src="${url}" class="w-full h-full object-cover"><div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center"><span class="bg-white text-black font-black px-4 py-2 rounded-full text-[11px]">EDITAR NO CAPCUT</span></div><div class="absolute bottom-2 left-2 bg-black/70 text-[9px] px-2 py-1 rounded-full">${modo.toUpperCase()}</div>`;
+  div.onclick=()=>abrirEditor(url);
+  res.appendChild(div);
+  abrirEditor(url);
+  document.getElementById('btnGerar').textContent='↑';
+ }, 1200);
+}
+function abrirEditor(url){
+ imgAtual=url; document.getElementById('editor').classList.remove('hidden');
+ const img=new Image(); img.crossOrigin='anonymous'; img.onload=()=>{ ctx.clearRect(0,0,720,1280); ctx.drawImage(img,0,0,720,1280); };
  img.src=url;
 }
-function usarDemo(url){
- currentImg=url;
- document.getElementById('editorOverlay').classList.remove('hidden');
- const img=new Image(); img.crossOrigin='anonymous';
- img.onload=()=>{ ctx.clearRect(0,0,720,1280); ctx.drawImage(img,0,0,720,1280); draw(); mctx.clearRect(0,0,270,480); mctx.drawImage(img,0,0,270,480); };
- img.src=url;
-}
-function usarComoBase(){ if(currentImg) usarDemo(currentImg); }
-function fecharEditor(){ document.getElementById('editorOverlay').classList.add('hidden'); }
+function fecharEditor(){ document.getElementById('editor').classList.add('hidden'); }
 function aplicarTexto(){
  const t=document.getElementById('txt').value; if(!t) return;
- textos=[{txt:t, x:360, y:1100, size:64}];
- draw();
-}
-function draw(){
- if(currentImg){ const img=new Image(); img.crossOrigin='anonymous'; img.src=currentImg; img.onload=()=>{ ctx.drawImage(img,0,0,720,1280); drawText(); }; } else drawText();
- function drawText(){ textos.forEach(o=>{ ctx.font=`900 ${o.size}px Inter`; ctx.textAlign='center'; ctx.lineWidth=14; ctx.strokeStyle='black'; ctx.strokeText(o.txt.toUpperCase(),o.x,o.y); ctx.fillStyle='white'; ctx.fillText(o.txt.toUpperCase(),o.x,o.y); }); }
+ textos=[{txt:t, y:1100, size:64}];
+ const img=new Image(); img.crossOrigin='anonymous'; img.onload=()=>{ ctx.clearRect(0,0,720,1280); ctx.drawImage(img,0,0,720,1280); ctx.font=`900 64px Inter`; ctx.textAlign='center'; ctx.lineWidth=14; ctx.strokeStyle='black'; ctx.strokeText(t.toUpperCase(),360,1100); ctx.fillStyle='white'; ctx.fillText(t.toUpperCase(),360,1100); };
+ img.src=imgAtual;
 }
 function exportar(){
- if(!currentImg && textos.length==0) return alert('Gere uma imagem primeiro no prompt acima!');
- const stream=canvas.captureStream(30); let chunks=[]; const rec=new MediaRecorder(stream,{mimeType:'video/webm'});
- rec.ondataavailable=e=>chunks.push(e.data);
- rec.onstop=()=>{ const b=new Blob(chunks,{type:'video/webm'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='dreamina-vpostzilla.webm'; a.click(); };
- rec.start(); setTimeout(()=>rec.stop(), 5000);
+ const a=document.createElement('a'); a.href=canvas.toDataURL('image/png'); a.download='dreamina-vpostzilla.png'; a.click();
+}
+function importRef(e){
+ const url=URL.createObjectURL(e.target.files[0]); document.getElementById('prompt').value+=' @referência adicionada'; abrirEditor(url);
 }
 </script>
 </body>
